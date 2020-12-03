@@ -31,9 +31,10 @@ except ImportError:
 
 
 def generate_truncated_string_hash(string):
-    if not isinstance(string, str):
-        msg = "string must be type str, not type <{}>".format(type(string))
-        raise TypeError(msg)
+    string = str(string)
+    #if not isinstance(string, str):
+    #    msg = "string must be type str, not type <{}>".format(type(string))
+    #    raise TypeError(msg)
     byte_string = string.encode('UTF-8')
     digest = getattr(hashlib, 'sha3_256')(byte_string).digest()
     hexdigest = digest.hex()
