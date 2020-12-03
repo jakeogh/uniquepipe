@@ -53,11 +53,17 @@ class UniquePipe():
             return True
         return False
 
-    def remove(self, string):
+    def pop(self, string):
         string_hash = generate_truncated_string_hash(string)
         if self.verbose:
             ic(string_hash)
         self.hashes.pop(string_hash)
+
+    def add(self, string):
+        string_hash = generate_truncated_string_hash(string)
+        if self.verbose:
+            ic(string_hash)
+        self.hashes.add(string_hash)
 
     def exists(self, string):
         string_hash = generate_truncated_string_hash(string)
