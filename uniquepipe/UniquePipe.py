@@ -53,11 +53,11 @@ class UniquePipe():
             return True
         return False
 
-    def pop(self, string):
+    def remove(self, string):  # .pop() returns arb element
         string_hash = generate_truncated_string_hash(string)
         if self.verbose:
             ic(string_hash)
-        self.hashes.pop(string_hash)
+        self.hashes.remove(string_hash)
 
     def add(self, string):
         string_hash = generate_truncated_string_hash(string)
