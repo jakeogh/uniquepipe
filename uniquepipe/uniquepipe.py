@@ -52,7 +52,7 @@ def cli(items,
     if sys.stdout.isatty():
         end = '\n'
 
-    uniquepipe = UniquePipe()
+    uniquepipe = UniquePipe(verbose=verbose)
 
     for index, item in enumerate_input(iterator=items,
                                        null=null,

@@ -19,7 +19,6 @@
 
 import hashlib
 
-
 try:
     from icecream import ic  # https://github.com/gruns/icecream
 except ImportError:
@@ -43,6 +42,7 @@ class UniquePipe():
     def __init__(self,
                  verbose=False,):
         self.hashes = set()
+        self.verbose = verbose
 
     def filter(self, string):
         string_hash = generate_truncated_string_hash(string)
