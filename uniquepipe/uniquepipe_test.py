@@ -17,8 +17,9 @@
 # pylint: disable=W0201  # attribute defined outside __init__
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
-import hashlib
 
+from uniquepipe import UniquePipe
+import click
 
 try:
     from icecream import ic  # https://github.com/gruns/icecream
@@ -30,25 +31,34 @@ except ImportError:
             kwargs.pop('file')
         print(*args, file=sys.stderr, **kwargs)
 
-
-def generate_truncated_string_hash(string):
-    assert isinstance(string, str)
-    byte_string = string.encode('UTF-8')
-    digest = getattr(hashlib, 'sha3_256')(byte_string).digest()
-    hexdigest = digest.hex()
-    return hexdigest[0:31]
+from enumerate_input import enumerate_input
 
 
-class UniquePipe():
-    def __init__(self,
-                 verbose=False,):
-        self.hashes = set()
+@click.command()
+@click.argument("items", type=str, nargs=-1)
+@click.option('--verbose', is_flag=True)
+@click.option('--debug', is_flag=True)
+@click.option("--printn", is_flag=True)
+def cli(items,
+        verbose,
+        debug,
+        printn,):
 
-    def filter(self, string):
-        string_hash = generate_truncated_string_hash(string)
-        if self.verbose:
-            ic(string_hash)
-        if string_hash not in self.hashes:
-            self.hashes.add(string_hash)
-            return True
-        return False
+    null = not printn
+    end = '\n'
+    if null:
+        end = '\x00'
+    if sys.stdout.isatty():
+        end = '\n'
+
+    uniquepipe = UniquePipe()
+
+    for index, item in enumerate_input(iterator=items,
+                                       null=null,
+                                       debug=debug,
+                                       verbose=verbose,):
+        if verbose:
+            ic(index, item)
+
+        if uniquepipe.filter(item):
+            print(item, end=end)

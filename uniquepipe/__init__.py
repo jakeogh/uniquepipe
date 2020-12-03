@@ -1,1 +1,1 @@
-from .uniquepipe import uniquepipe
+from .uniquepipe import UniquePipe

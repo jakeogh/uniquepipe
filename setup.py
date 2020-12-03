@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import fastentrypoints
+
 from setuptools import find_packages, setup
+
+import fastentrypoints
+
 if not sys.version_info[0] == 3:
     sys.exit("Python 3 is required. Use: \'python3 setup.py install\'")
 
@@ -24,7 +27,7 @@ config = {
     "install_requires": dependencies,
     "entry_points": {
         "console_scripts": [
-            "uniquepipe=uniquepipe.uniquepipe:cli",
+            "uniquepipe_test=uniquepipe.uniquepipe_test:cli",
         ],
     },
 }
