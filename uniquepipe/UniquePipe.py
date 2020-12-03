@@ -75,3 +75,8 @@ class UniquePipe():
 
     def __len__(self):
         return len(self.hashes)
+
+    def __contains__(self, match):
+        if self.exists(match):
+            return True
+        return False
