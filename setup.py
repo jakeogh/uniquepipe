@@ -27,7 +27,7 @@ config = {
     "install_requires": dependencies,
     "entry_points": {
         "console_scripts": [
-            "uniquepipe_test=uniquepipe.uniquepipe_test:cli",
+            "uniquepipe=uniquepipe.uniquepipe:cli",
         ],
     },
 }
