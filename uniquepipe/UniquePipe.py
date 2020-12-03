@@ -72,3 +72,6 @@ class UniquePipe():
         if string_hash in self.hashes:
             return True
         return False
+
+    def __len__(self):
+        return len(self.hashes)
