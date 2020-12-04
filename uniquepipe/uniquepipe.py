@@ -68,6 +68,8 @@ def cli(items,
 
     uniquepipe = UniquePipe(verbose=verbose)
     for preload in preloads:
+        if verbose:
+            ic(preload)
         with open(preload, 'rb') as fh:
             for index, item in enumerate_input(iterator=fh,
                                                null=preload_null,
