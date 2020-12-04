@@ -40,7 +40,18 @@ from enumerate_input import enumerate_input
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option("--printn", is_flag=True)
+@click.option("--preload", "preloads",
+              type=click.Path(exists=True,
+                              dir_okay=False,
+                              file_okay=False,
+                              path_type=str,
+                              allow_dash=True,),
+              multiple=True)
+#@click.option("--preload-delim-newline", is_flag=True)
+@click.option("--preload-delim-null", is_flag=True)
 def cli(items,
+        preloads,
+        preload_delim_null,
         verbose,
         debug,
         printn,):
@@ -52,7 +63,23 @@ def cli(items,
     if sys.stdout.isatty():
         end = '\n'
 
+    #if preload_delim_newline and preload_delim_null:
+    #    raise ValueError("--preload-delim-newline and --preload-delim-null are mutually exclusive")
+
+    #if preload_delim_newline:
+    preload_null = False
+    if preload_delim_null:
+        preload_null = True
+
     uniquepipe = UniquePipe(verbose=verbose)
+    for preload in preloads:
+        with open(preload, 'rb') as fh:
+            for index, item in enumerate_input(iterator=fh,
+                                               null=preload_null,
+                                               debug=debug,
+                                               verbose=verbose,):
+                uniquepipe.filter(item)
+        ic(len(uniquepipe))
 
     for index, item in enumerate_input(iterator=items,
                                        null=null,
