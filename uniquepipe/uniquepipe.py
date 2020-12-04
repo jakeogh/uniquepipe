@@ -43,7 +43,7 @@ from enumerate_input import enumerate_input
 @click.option("--preload", "preloads",
               type=click.Path(exists=True,
                               dir_okay=False,
-                              file_okay=False,
+                              file_okay=True,
                               path_type=str,
                               allow_dash=True,),
               multiple=True)
