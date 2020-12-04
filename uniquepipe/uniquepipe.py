@@ -79,7 +79,8 @@ def cli(items,
                 if verbose:
                     ic(index, item)
                 uniquepipe.filter(item)
-        ic(len(uniquepipe))
+        if verbose:
+            ic('preloaded:', len(uniquepipe))
 
     for index, item in enumerate_input(iterator=items,
                                        null=null,
