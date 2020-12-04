@@ -76,6 +76,7 @@ def cli(items,
         with open(preload, 'rb') as fh:
             for index, item in enumerate_input(iterator=fh,
                                                null=preload_null,
+                                               disable_stdin=True,
                                                debug=debug,
                                                verbose=verbose,):
                 uniquepipe.filter(item)
