@@ -47,7 +47,6 @@ from enumerate_input import enumerate_input
                               path_type=str,
                               allow_dash=True,),
               multiple=True)
-#@click.option("--preload-delim-newline", is_flag=True)
 @click.option("--preload-delim-null", is_flag=True)
 def cli(items,
         preloads,
@@ -63,10 +62,6 @@ def cli(items,
     if sys.stdout.isatty():
         end = '\n'
 
-    #if preload_delim_newline and preload_delim_null:
-    #    raise ValueError("--preload-delim-newline and --preload-delim-null are mutually exclusive")
-
-    #if preload_delim_newline:
     preload_null = False
     if preload_delim_null:
         preload_null = True
@@ -79,6 +74,8 @@ def cli(items,
                                                disable_stdin=True,
                                                debug=debug,
                                                verbose=verbose,):
+                if verbose:
+                    ic(index, item)
                 uniquepipe.filter(item)
         ic(len(uniquepipe))
 
