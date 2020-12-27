@@ -28,6 +28,7 @@ except ImportError:
         if 'file' in kwargs.keys():
             kwargs.pop('file')
         print(*args, file=sys.stderr, **kwargs)
+    ic = eprint
 
 
 def generate_truncated_string_hash(string):
