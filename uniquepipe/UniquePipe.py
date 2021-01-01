@@ -91,6 +91,9 @@ class UniquePipe():
             return True
         return False
 
+    def __sizeof__(self):
+        return len(self) * self.length
+
     def __len__(self):
         return len(self.hashes)
 

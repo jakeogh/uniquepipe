@@ -96,6 +96,7 @@ def cli(items,
             ic('preloaded:', len(uniquepipe))
 
     unique_count = 0
+    #bytes_read = 0
     for index, item in enumerate_input(iterator=items,
                                        head=False,
                                        skip=False,
@@ -113,6 +114,8 @@ def cli(items,
         else:
             if exit_on_collision:
                 ic(unique_count)
+                ic(uniquepipe.__sizeof__())
+                ic(sys.getsizeof(uniquepipe))
                 raise ValueError("collision: {}".format(item))
     if count:
         print(unique_count, end=end)
