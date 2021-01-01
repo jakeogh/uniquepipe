@@ -31,25 +31,33 @@ except ImportError:
     ic = eprint
 
 
-def generate_truncated_string_hash(string):
-    string = str(string)
+def generate_truncated_string_hash(string: str,
+                                   length: int,
+                                   algorithm: str,):
+    string = str(string)  # todo
     #if not isinstance(string, str):
     #    msg = "string must be type str, not type <{}>".format(type(string))
     #    raise TypeError(msg)
     byte_string = string.encode('UTF-8')
-    digest = getattr(hashlib, 'sha3_256')(byte_string).digest()
+    digest = getattr(hashlib, algorithm)(byte_string).digest()
     hexdigest = digest.hex()
-    return hexdigest[0:31]
+    return hexdigest[0:length - 1]
 
 
 class UniquePipe():
     def __init__(self,
+                 length: str = 32,
+                 algorithm: str = 'sha3_256',
                  verbose=False,):
         self.hashes = set()
+        self.length = length
+        self.algorithm = algorithm
         self.verbose = verbose
 
     def filter(self, string):
-        string_hash = generate_truncated_string_hash(string)
+        string_hash = generate_truncated_string_hash(string=string,
+                                                     length=self.length,
+                                                     algorithm=self.algorithm,)
         if self.verbose:
             ic(string_hash)
         if string_hash not in self.hashes:
@@ -58,19 +66,25 @@ class UniquePipe():
         return False
 
     def remove(self, string):  # .pop() returns arb element
-        string_hash = generate_truncated_string_hash(string)
+        string_hash = generate_truncated_string_hash(string=string,
+                                                     length=self.length,
+                                                     algorithm=self.algorithm,)
         if self.verbose:
             ic(string_hash)
         self.hashes.remove(string_hash)
 
     def add(self, string):
-        string_hash = generate_truncated_string_hash(string)
+        string_hash = generate_truncated_string_hash(string=string,
+                                                     length=self.length,
+                                                     algorithm=self.algorithm,)
         if self.verbose:
             ic(string_hash)
         self.hashes.add(string_hash)
 
     def exists(self, string):
-        string_hash = generate_truncated_string_hash(string)
+        string_hash = generate_truncated_string_hash(string=string,
+                                                     length=self.length,
+                                                     algorithm=self.algorithm,)
         if self.verbose:
             ic(string_hash)
         if string_hash in self.hashes:
