@@ -39,6 +39,7 @@ except ImportError:
 @click.argument("items", type=str, nargs=-1)
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
+@click.option('--count', is_flag=True)
 @click.option("--printn", is_flag=True)
 @click.option("--length", type=int, default=32)
 @click.option("--algorithm", type=str, default='sha3_256')
@@ -55,6 +56,7 @@ def cli(items,
         preloads,
         preload_delim_null,
         verbose,
+        count,
         exit_on_collision,
         length,
         algorithm,
@@ -93,6 +95,7 @@ def cli(items,
         if verbose:
             ic('preloaded:', len(uniquepipe))
 
+    unique_count = 0
     for index, item in enumerate_input(iterator=items,
                                        head=False,
                                        skip=False,
@@ -104,7 +107,12 @@ def cli(items,
             ic(index, item)
 
         if uniquepipe.filter(item):
-            print(item, end=end)
+            unique_count += 1
+            if not count:
+                print(item, end=end)
         else:
             if exit_on_collision:
+                ic(unique_count)
                 raise ValueError("collision: {}".format(item))
+    if count:
+        print(unique_count, end=end)
