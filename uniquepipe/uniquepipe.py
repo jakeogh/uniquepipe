@@ -40,6 +40,8 @@ except ImportError:
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option("--printn", is_flag=True)
+@click.option("--length", type=int, default=32)
+@click.option("--algorithm", type=str, default='sha3_256')
 @click.option("--exit-on-collision", is_flag=True)
 @click.option("--preload", "preloads",
               type=click.Path(exists=True,
@@ -54,6 +56,8 @@ def cli(items,
         preload_delim_null,
         verbose,
         exit_on_collision,
+        length,
+        algorithm,
         debug,
         printn,):
 
@@ -68,7 +72,9 @@ def cli(items,
     if preload_delim_null:
         preload_null = True
 
-    uniquepipe = UniquePipe(verbose=verbose)
+    uniquepipe = UniquePipe(algorithm=algorithm,
+                            length=length,
+                            verbose=verbose,)
     for preload in preloads:
         if verbose:
             ic(preload)
@@ -99,3 +105,6 @@ def cli(items,
 
         if uniquepipe.filter(item):
             print(item, end=end)
+        else:
+            if exit_on_collision:
+                raise ValueError("collision: {}".format(item))
