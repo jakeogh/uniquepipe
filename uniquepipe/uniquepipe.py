@@ -80,9 +80,9 @@ def cli(items,
             ic(preload)
         with open(preload, 'rb') as fh:
             for index, item in enumerate_input(iterator=fh,
-                                               head=None,
-                                               skip=None,
-                                               tail=None,
+                                               head=False,
+                                               skip=False,
+                                               tail=False,
                                                null=preload_null,
                                                disable_stdin=True,
                                                debug=debug,
@@ -94,9 +94,9 @@ def cli(items,
             ic('preloaded:', len(uniquepipe))
 
     for index, item in enumerate_input(iterator=items,
-                                       head=None,
-                                       skip=None,
-                                       tail=None,
+                                       head=False,
+                                       skip=False,
+                                       tail=False,
                                        null=null,
                                        debug=debug,
                                        verbose=verbose,):
