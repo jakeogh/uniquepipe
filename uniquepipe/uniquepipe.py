@@ -21,6 +21,7 @@
 import sys
 
 import click
+from enumerate_input import enumerate_input
 
 from uniquepipe import UniquePipe
 
@@ -32,7 +33,6 @@ except ImportError:
             kwargs.pop('file')
         print(*args, file=sys.stderr, **kwargs)
 
-from enumerate_input import enumerate_input
 
 
 @click.command()
@@ -40,6 +40,7 @@ from enumerate_input import enumerate_input
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option("--printn", is_flag=True)
+@click.option("--exit-on-collision", is_flag=True)
 @click.option("--preload", "preloads",
               type=click.Path(exists=True,
                               dir_okay=False,
@@ -52,6 +53,7 @@ def cli(items,
         preloads,
         preload_delim_null,
         verbose,
+        exit_on_collision,
         debug,
         printn,):
 
@@ -72,6 +74,9 @@ def cli(items,
             ic(preload)
         with open(preload, 'rb') as fh:
             for index, item in enumerate_input(iterator=fh,
+                                               head=None,
+                                               skip=None,
+                                               tail=None,
                                                null=preload_null,
                                                disable_stdin=True,
                                                debug=debug,
@@ -83,6 +88,9 @@ def cli(items,
             ic('preloaded:', len(uniquepipe))
 
     for index, item in enumerate_input(iterator=items,
+                                       head=None,
+                                       skip=None,
+                                       tail=None,
                                        null=null,
                                        debug=debug,
                                        verbose=verbose,):
