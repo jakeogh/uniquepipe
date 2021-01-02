@@ -107,12 +107,15 @@ def cli(items,
         if verbose:
             ic(index, item)
 
+        assert len(item) > 0
+
         if uniquepipe.filter(item):
             unique_count += 1
             if not count:
                 print(item, end=end)
         else:
             if exit_on_collision:
+                ic(item)
                 ic(unique_count)
                 ic(uniquepipe.__sizeof__())
                 ic(sys.getsizeof(uniquepipe))
