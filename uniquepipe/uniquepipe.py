@@ -107,7 +107,8 @@ def cli(items,
         if verbose:
             ic(index, item)
 
-        assert len(item) > 0
+        if len(item) == 0:
+            ic(index, item)
 
         if uniquepipe.filter(item):
             unique_count += 1
