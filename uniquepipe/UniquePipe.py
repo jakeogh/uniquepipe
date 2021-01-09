@@ -44,6 +44,7 @@ def generate_truncated_string_hash(string: str,
     #if not isinstance(string, str):
     #    msg = "string must be type str, not type <{}>".format(type(string))
     #    raise TypeError(msg)
+    ic(algorithm)
     byte_string = string.encode('UTF-8')
     digest = getattr(hashlib, algorithm)(byte_string).digest()
     hexdigest = digest.hex()
