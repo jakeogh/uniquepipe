@@ -31,7 +31,8 @@ except ImportError:
     ic = eprint
 
 
-def generate_truncated_string_hash(string: str,
+def generate_truncated_string_hash(*,
+                                   string: str,
                                    length: int,
                                    algorithm: str,
                                    verbose: bool,
