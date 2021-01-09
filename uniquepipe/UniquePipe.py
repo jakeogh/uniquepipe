@@ -51,14 +51,16 @@ def generate_truncated_string_hash(string: str,
 
 
 class UniquePipe():
-    def __init__(self,
+    def __init__(self, *,
+                 verbose: bool,
+                 debug: bool,
                  length: str = 32,
-                 algorithm: str = 'sha3_256',
-                 verbose=False,):
+                 algorithm: str = 'sha3_256',):
         self.hashes = set()
         self.length = length
         self.algorithm = algorithm
         self.verbose = verbose
+        self.debug = debug
 
     def filter(self, string):
         string_hash = generate_truncated_string_hash(string=string,
