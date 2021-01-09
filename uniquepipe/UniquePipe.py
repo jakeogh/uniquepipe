@@ -39,6 +39,7 @@ def generate_truncated_string_hash(*,
                                    debug: bool,
                                    accept_empty: bool = False,):
     string = str(string)  # todo
+    assert algorithm is not None
     if not accept_empty:
         if len(string) == 0:
             raise ValueError('empty string')
