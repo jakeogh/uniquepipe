@@ -35,8 +35,12 @@ def generate_truncated_string_hash(string: str,
                                    length: int,
                                    algorithm: str,
                                    verbose: bool,
-                                   debug: bool,):
+                                   debug: bool,
+                                   accept_empty: bool = False,):
     string = str(string)  # todo
+    if not accept_empty:
+        if len(string) == 0:
+            raise ValueError('empty string')
     #if not isinstance(string, str):
     #    msg = "string must be type str, not type <{}>".format(type(string))
     #    raise TypeError(msg)
