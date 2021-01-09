@@ -76,7 +76,9 @@ class UniquePipe():
     def remove(self, string):  # .pop() returns arb element
         string_hash = generate_truncated_string_hash(string=string,
                                                      length=self.length,
-                                                     algorithm=self.algorithm,)
+                                                     algorithm=self.algorithm,
+                                                     verbose=self.verbose,
+                                                     debug=self.debug,)
         if self.verbose:
             ic(string_hash)
         self.hashes.remove(string_hash)
@@ -84,7 +86,9 @@ class UniquePipe():
     def add(self, string):
         string_hash = generate_truncated_string_hash(string=string,
                                                      length=self.length,
-                                                     algorithm=self.algorithm,)
+                                                     algorithm=self.algorithm,
+                                                     verbose=self.verbose,
+                                                     debug=self.debug,)
         if self.verbose:
             ic(string_hash)
         self.hashes.add(string_hash)
@@ -92,7 +96,9 @@ class UniquePipe():
     def exists(self, string):
         string_hash = generate_truncated_string_hash(string=string,
                                                      length=self.length,
-                                                     algorithm=self.algorithm,)
+                                                     algorithm=self.algorithm,
+                                                     verbose=self.verbose,
+                                                     debug=self.debug,)
         if self.verbose:
             ic(string_hash)
         if string_hash in self.hashes:
