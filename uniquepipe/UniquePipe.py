@@ -33,7 +33,9 @@ except ImportError:
 
 def generate_truncated_string_hash(string: str,
                                    length: int,
-                                   algorithm: str,):
+                                   algorithm: str,
+                                   verbose: bool,
+                                   debug: bool,):
     string = str(string)  # todo
     #if not isinstance(string, str):
     #    msg = "string must be type str, not type <{}>".format(type(string))
@@ -57,7 +59,9 @@ class UniquePipe():
     def filter(self, string):
         string_hash = generate_truncated_string_hash(string=string,
                                                      length=self.length,
-                                                     algorithm=self.algorithm,)
+                                                     algorithm=self.algorithm,
+                                                     verbose=self.verbose,
+                                                     debug=self.debug,)
         if self.verbose:
             ic(string_hash)
         if string_hash not in self.hashes:
