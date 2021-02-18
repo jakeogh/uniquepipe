@@ -76,7 +76,8 @@ def cli(items,
 
     uniquepipe = UniquePipe(algorithm=algorithm,
                             length=length,
-                            verbose=verbose,)
+                            verbose=verbose,
+                            debug=debug,)
     for preload in preloads:
         if verbose:
             ic(preload)
