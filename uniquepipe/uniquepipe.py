@@ -34,9 +34,15 @@ except ImportError:
         print(*args, file=sys.stderr, **kwargs)
 
 
+def perhaps_invert(thing, *, invert):
+    if invert:
+        return not thing
+
+
 
 @click.command()
 @click.argument("items", type=str, nargs=-1)
+@click.option('--duplicates', is_flag=True)
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option('--count', is_flag=True)
@@ -53,6 +59,7 @@ except ImportError:
               multiple=True)
 @click.option("--preload-delim-null", is_flag=True)
 def cli(items,
+        duplicates,
         preloads,
         preload_delim_null,
         verbose,
@@ -97,6 +104,7 @@ def cli(items,
             ic('preloaded:', len(uniquepipe))
 
     unique_count = 0
+    duplicate_count = 0
     #bytes_read = 0
     for index, item in enumerate_input(iterator=items,
                                        head=False,
@@ -114,13 +122,21 @@ def cli(items,
         if uniquepipe.filter(item):
             unique_count += 1
             if not count:
-                print(item, end=end)
+                if not duplicates:
+                    print(item, end=end)
         else:
+            duplicate_count += 1
             if exit_on_collision:
                 ic(item)
                 ic(unique_count)
                 ic(uniquepipe.__sizeof__())
                 ic(sys.getsizeof(uniquepipe))
                 raise ValueError("collision: {}".format(item))
+            if duplicates:
+                print(item, end=end)
+
     if count:
-        print(unique_count, end=end)
+        if duplicates:
+            print(duplicate_count, end=end)
+        else:
+            print(unique_count, end=end)

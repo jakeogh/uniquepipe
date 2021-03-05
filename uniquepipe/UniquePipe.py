@@ -57,7 +57,7 @@ class UniquePipe():
     def __init__(self, *,
                  verbose: bool,
                  debug: bool,
-                 length: str = 32,
+                 length: int = 32,
                  algorithm: str = 'sha3_256',):
         self.hashes = set()
         self.length = length
