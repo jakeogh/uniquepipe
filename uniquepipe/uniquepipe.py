@@ -120,7 +120,7 @@ def cli(items,
             ic(index, item)
 
         if len(item) == 0:
-            ic(index, item)
+            ic('empty value found:', index, item, accept_empty)
 
         if uniquepipe.filter(item):
             unique_count += 1
