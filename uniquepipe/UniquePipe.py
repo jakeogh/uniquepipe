@@ -57,6 +57,7 @@ class UniquePipe():
     def __init__(self, *,
                  verbose: bool,
                  debug: bool,
+                 accept_empty: bool,
                  length: int = 32,
                  algorithm: str = 'sha3_256',):
         self.hashes = set()
@@ -64,11 +65,13 @@ class UniquePipe():
         self.algorithm = algorithm
         self.verbose = verbose
         self.debug = debug
+        self.accept_empty = accept_empty
 
     def filter(self, string):
         string_hash = generate_truncated_string_hash(string=string,
                                                      length=self.length,
                                                      algorithm=self.algorithm,
+                                                     accept_empty=self.accept_empty,
                                                      verbose=self.verbose,
                                                      debug=self.debug,)
         if self.verbose:
@@ -82,6 +85,7 @@ class UniquePipe():
         string_hash = generate_truncated_string_hash(string=string,
                                                      length=self.length,
                                                      algorithm=self.algorithm,
+                                                     accept_empty=self.accept_empty,
                                                      verbose=self.verbose,
                                                      debug=self.debug,)
         if self.verbose:
@@ -92,6 +96,7 @@ class UniquePipe():
         string_hash = generate_truncated_string_hash(string=string,
                                                      length=self.length,
                                                      algorithm=self.algorithm,
+                                                     accept_empty=self.accept_empty,
                                                      verbose=self.verbose,
                                                      debug=self.debug,)
         if self.verbose:
@@ -102,6 +107,7 @@ class UniquePipe():
         string_hash = generate_truncated_string_hash(string=string,
                                                      length=self.length,
                                                      algorithm=self.algorithm,
+                                                     accept_empty=self.accept_empty,
                                                      verbose=self.verbose,
                                                      debug=self.debug,)
         if self.verbose:

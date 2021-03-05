@@ -47,6 +47,7 @@ def perhaps_invert(thing, *, invert):
 @click.option('--debug', is_flag=True)
 @click.option('--count', is_flag=True)
 @click.option("--printn", is_flag=True)
+@click.option("--accept-empty", is_flag=True)
 @click.option("--length", type=int, default=32)
 @click.option("--algorithm", type=str, default='sha3_256')
 @click.option("--exit-on-collision", is_flag=True)
@@ -66,6 +67,7 @@ def cli(items,
         count,
         exit_on_collision,
         length,
+        accept_empty,
         algorithm,
         debug,
         printn,):
@@ -83,6 +85,7 @@ def cli(items,
 
     uniquepipe = UniquePipe(algorithm=algorithm,
                             length=length,
+                            accept_empty=accept_empty,
                             verbose=verbose,
                             debug=debug,)
     for preload in preloads:
