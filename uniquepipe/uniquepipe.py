@@ -25,19 +25,22 @@ from enumerate_input import enumerate_input
 
 from uniquepipe import UniquePipe
 
+
+def eprint(*args, **kwargs):
+    if 'file' in kwargs.keys():
+        kwargs.pop('file')
+    print(*args, file=sys.stderr, **kwargs)
+
+
 try:
     from icecream import ic  # https://github.com/gruns/icecream
 except ImportError:
-    def eprint(*args, **kwargs):
-        if 'file' in kwargs.keys():
-            kwargs.pop('file')
-        print(*args, file=sys.stderr, **kwargs)
+    ic = eprint
 
 
 def perhaps_invert(thing, *, invert):
     if invert:
         return not thing
-
 
 
 @click.command()
