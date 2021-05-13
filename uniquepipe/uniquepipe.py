@@ -61,7 +61,7 @@ def perhaps_invert(thing, *, invert):
                               path_type=str,
                               allow_dash=True,),
               multiple=True)
-@click.option("--preload-delim-null", is_flag=True)
+@click.option("--preload-delim-null", "--preload-null", is_flag=True)
 def cli(items,
         duplicates,
         preloads,
