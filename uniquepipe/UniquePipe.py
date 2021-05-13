@@ -74,7 +74,7 @@ class UniquePipe():
                                                      accept_empty=self.accept_empty,
                                                      verbose=self.verbose,
                                                      debug=self.debug,)
-        if self.verbose:
+        if self.debug:
             ic(string_hash)
         if string_hash not in self.hashes:
             self.hashes.add(string_hash)
