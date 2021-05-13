@@ -93,7 +93,7 @@ def cli(items,
                             debug=debug,)
     for preload in preloads:
         if verbose:
-            ic(preload)
+            ic(preload, preload_delim_null, preload_null)
         with open(preload, 'rb') as fh:
             for index, item in enumerate_input(iterator=fh,
                                                head=False,
@@ -104,7 +104,7 @@ def cli(items,
                                                debug=debug,
                                                verbose=verbose,):
                 if verbose:
-                    ic(index, item)
+                    ic('preload:', index, item)
                 uniquepipe.filter(item)
         if verbose:
             ic('preloaded:', len(uniquepipe))
