@@ -154,7 +154,10 @@ def cli(items,
                 ic(sys.getsizeof(uniquepipe))
                 raise ValueError("collision: {}".format(item))
             if duplicates:
-                print(item, end=end)  # todo digest prepend
+                if prepend:
+                    print(digest.hex(), item, end=end)
+                else:
+                    print(item, end=end)  # todo digest prepend
 
     if count:
         if duplicates:
