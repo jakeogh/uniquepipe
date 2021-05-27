@@ -18,6 +18,10 @@
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
 import hashlib
+from pathlib import Path
+
+import numpy
+from pyphash import hash_pdqhash
 
 try:
     from icecream import ic  # https://github.com/gruns/icecream
@@ -37,7 +41,8 @@ def generate_truncated_string_hash(*,
                                    algorithm: str,
                                    verbose: bool,
                                    debug: bool,
-                                   accept_empty: bool = False,):
+                                   accept_empty: bool = False,
+                                   ):
     string = str(string)  # todo
     assert algorithm is not None
     if not accept_empty:
@@ -53,11 +58,29 @@ def generate_truncated_string_hash(*,
     return hexdigest[0:length - 1]
 
 
+def generate_truncated_pdqhash(*,
+                               path: Path,
+                               length: int,
+                               algorithm: str,
+                               verbose: bool,
+                               debug: bool,
+                               accept_empty: bool = False,
+                               ):
+
+    digest = hash_pdqhash(path=path,
+                          rotations=False,  # todo
+                          verbose=verbose,
+                          debug=debug,)
+
+    return digest[0:length - 1]
+
+
 class UniquePipe():
     def __init__(self, *,
                  verbose: bool,
                  debug: bool,
                  accept_empty: bool,
+                 paths: bool,
                  length: int = 32,
                  algorithm: str = 'sha3_256',):
         self.hashes = set()
@@ -66,14 +89,18 @@ class UniquePipe():
         self.verbose = verbose
         self.debug = debug
         self.accept_empty = accept_empty
+        if algorithm == 'pdqhash':
+            self.algorithm_function = generate_truncated_pdqhash
+        else:
+            self.algorithm_function = generate_truncated_string_hash
 
     def filter(self, string):
-        string_hash = generate_truncated_string_hash(string=string,
-                                                     length=self.length,
-                                                     algorithm=self.algorithm,
-                                                     accept_empty=self.accept_empty,
-                                                     verbose=self.verbose,
-                                                     debug=self.debug,)
+        string_hash = self.algorithm_function(string=string,
+                                              length=self.length,
+                                              algorithm=self.algorithm,
+                                              accept_empty=self.accept_empty,
+                                              verbose=self.verbose,
+                                              debug=self.debug,)
         if self.debug:
             ic(string_hash)
         if string_hash not in self.hashes:
@@ -82,34 +109,34 @@ class UniquePipe():
         return False
 
     def remove(self, string):  # .pop() returns arb element
-        string_hash = generate_truncated_string_hash(string=string,
-                                                     length=self.length,
-                                                     algorithm=self.algorithm,
-                                                     accept_empty=self.accept_empty,
-                                                     verbose=self.verbose,
-                                                     debug=self.debug,)
+        string_hash = self.algorithm_function(string=string,
+                                              length=self.length,
+                                              algorithm=self.algorithm,
+                                              accept_empty=self.accept_empty,
+                                              verbose=self.verbose,
+                                              debug=self.debug,)
         if self.verbose:
             ic(string_hash)
         self.hashes.remove(string_hash)
 
     def add(self, string):
-        string_hash = generate_truncated_string_hash(string=string,
-                                                     length=self.length,
-                                                     algorithm=self.algorithm,
-                                                     accept_empty=self.accept_empty,
-                                                     verbose=self.verbose,
-                                                     debug=self.debug,)
+        string_hash = self.algorithm_function(string=string,
+                                              length=self.length,
+                                              algorithm=self.algorithm,
+                                              accept_empty=self.accept_empty,
+                                              verbose=self.verbose,
+                                              debug=self.debug,)
         if self.verbose:
             ic(string_hash)
         self.hashes.add(string_hash)
 
     def exists(self, string):
-        string_hash = generate_truncated_string_hash(string=string,
-                                                     length=self.length,
-                                                     algorithm=self.algorithm,
-                                                     accept_empty=self.accept_empty,
-                                                     verbose=self.verbose,
-                                                     debug=self.debug,)
+        string_hash = self.algorithm_function(string=string,
+                                              length=self.length,
+                                              algorithm=self.algorithm,
+                                              accept_empty=self.accept_empty,
+                                              verbose=self.verbose,
+                                              debug=self.debug,)
         if self.verbose:
             ic(string_hash)
         if string_hash in self.hashes:
