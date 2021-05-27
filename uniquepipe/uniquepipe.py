@@ -51,6 +51,7 @@ def perhaps_invert(thing, *, invert):
 @click.option('--debug', is_flag=True)
 @click.option('--count', is_flag=True)
 @click.option("--printn", is_flag=True)
+@click.option("--prepend", is_flag=True)
 @click.option("--accept-empty", is_flag=True)
 @click.option("--length", type=int, default=32)
 @click.option("--algorithm", type=str, default='sha3_256')
@@ -76,6 +77,7 @@ def cli(items,
         debug: bool,
         paths: bool,
         printn: bool,
+        prepend: bool,
         ):
 
     null = not printn
@@ -106,7 +108,8 @@ def cli(items,
                                                null=preload_null,
                                                disable_stdin=True,
                                                debug=debug,
-                                               verbose=verbose,):
+                                               verbose=verbose,
+                                               ):
                 if verbose:
                     ic('preload:', index, item)
                 uniquepipe.filter(item)
@@ -123,17 +126,22 @@ def cli(items,
                                        null=null,
                                        debug=debug,
                                        verbose=verbose,):
+        digest = None
         if verbose:
             ic(index, item)
 
         if len(item) == 0:
             ic('empty value found:', index, item, accept_empty)
 
-        if uniquepipe.filter(item):
+        digest = uniquepipe.filter(item)
+        if digest:
             unique_count += 1
             if not count:
                 if not duplicates:
-                    print(item, end=end)
+                    if prepend:
+                        print(digest.hex(), item, end=end)
+                    else:
+                        print(item, end=end)
         else:
             duplicate_count += 1
             if exit_on_collision:
@@ -143,7 +151,7 @@ def cli(items,
                 ic(sys.getsizeof(uniquepipe))
                 raise ValueError("collision: {}".format(item))
             if duplicates:
-                print(item, end=end)
+                print(item, end=end)  # todo digest prepend
 
     if count:
         if duplicates:
