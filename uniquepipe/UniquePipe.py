@@ -17,10 +17,12 @@
 # pylint: disable=W0201  # attribute defined outside __init__
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
+import binascii
 import hashlib
 from pathlib import Path
 
 import numpy
+from hasher import rhash_file
 from pyphash import hash_pdqhash
 
 try:
@@ -59,6 +61,24 @@ def generate_truncated_string_hash(*,
     return digest[0:length - 1]
 
 
+def generate_truncated_file_hash(*,
+                                 string: str,
+                                 length: int,
+                                 algorithm: str,
+                                 verbose: bool,
+                                 debug: bool,
+                                 accept_empty: bool = False,
+                                 ):
+
+    hexdigest = rhash_file(path=string,
+                           algorithm=algorithm,
+                           verbose=verbose,
+                           debug=debug,)
+
+    digest = binascii.unhexlify(hexdigest)
+    return digest[0:length - 1]
+
+
 def generate_truncated_pdqhash(*,
                                string: Path,
                                length: int,
@@ -91,9 +111,13 @@ class UniquePipe():
         self.debug = debug
         self.accept_empty = accept_empty
         if algorithm == 'pdqhash':
+            assert paths
             self.algorithm_function = generate_truncated_pdqhash
         else:
-            self.algorithm_function = generate_truncated_string_hash
+            if paths:
+                self.algorithm_function = generate_truncated_file_hash
+            else:
+                self.algorithm_function = generate_truncated_string_hash
 
     def filter(self, string):
         string_hash = self.algorithm_function(string=string,
