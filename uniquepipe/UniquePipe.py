@@ -70,7 +70,7 @@ def generate_truncated_file_hash(*,
                                  accept_empty: bool = False,
                                  ):
 
-    hexdigest = rhash_file(path=string,
+    hexdigest = rhash_file(path=Path(string),
                            algorithm=algorithm,
                            verbose=verbose,
                            debug=debug,)
