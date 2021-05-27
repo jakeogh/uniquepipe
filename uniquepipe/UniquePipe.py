@@ -54,8 +54,9 @@ def generate_truncated_string_hash(*,
     #ic(algorithm)
     byte_string = string.encode('UTF-8')
     digest = getattr(hashlib, algorithm)(byte_string).digest()
-    hexdigest = digest.hex()
-    return hexdigest[0:length - 1]
+    #hexdigest = digest.hex()
+    #return hexdigest[0:length - 1]  # for sha3_256 this was cutting it in half from 256 to 128 if length == 32
+    return digest[0:length - 1]
 
 
 def generate_truncated_pdqhash(*,
