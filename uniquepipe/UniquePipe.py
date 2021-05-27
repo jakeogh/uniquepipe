@@ -81,7 +81,7 @@ def generate_truncated_file_hash(*,
 
 
 def generate_truncated_pdqhash(*,
-                               string: Path,
+                               string: str,
                                length: int,
                                algorithm: str,
                                verbose: bool,
@@ -89,7 +89,7 @@ def generate_truncated_pdqhash(*,
                                accept_empty: bool = False,
                                ):
 
-    digest = hash_pdqhash(path=string,
+    digest = hash_pdqhash(path=Path(string),
                           rotations=False,  # todo
                           verbose=verbose,
                           debug=debug,)
