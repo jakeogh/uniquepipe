@@ -130,14 +130,15 @@ def cli(items,
                                        debug=debug,
                                        verbose=verbose,):
         digest = None
+        new = False
         if verbose:
             ic(index, item)
 
         if len(item) == 0:
             ic('empty value found:', index, item, accept_empty)
 
-        digest = uniquepipe.filter(item)
-        if digest:
+        new, digest = uniquepipe.filter(item)
+        if new:
             unique_count += 1
             if not count:
                 if not duplicates:
@@ -157,7 +158,7 @@ def cli(items,
                 if prepend:
                     print(digest.hex(), item, end=end)
                 else:
-                    print(item, end=end)  # todo digest prepend
+                    print(item, end=end)
 
     if count:
         if duplicates:

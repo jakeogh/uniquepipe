@@ -138,8 +138,8 @@ class UniquePipe():
             ic(string_hash)
         if string_hash not in self.hashes:
             self.hashes.add(string_hash)
-            return string_hash
-        return None
+            return True, string_hash
+        return False, string_hash   # needed to be able to --prepend to duplicates
 
     def remove(self, string):  # .pop() returns arb element
         string_hash = self.algorithm_function(string=string,
