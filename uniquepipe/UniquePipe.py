@@ -70,7 +70,8 @@ def generate_truncated_file_hash(*,
                                  accept_empty: bool = False,
                                  ):
 
-    hexdigest = rhash_file(path=Path(string),
+    path = Path(string).resolve()
+    hexdigest = rhash_file(path=path,
                            algorithm=algorithm,
                            verbose=verbose,
                            debug=debug,)
@@ -118,6 +119,8 @@ class UniquePipe():
                 self.algorithm_function = generate_truncated_file_hash
             else:
                 self.algorithm_function = generate_truncated_string_hash
+        if verbose:
+            ic(self.algorithm_function)
 
     def filter(self, string):
         string_hash = self.algorithm_function(string=string,
