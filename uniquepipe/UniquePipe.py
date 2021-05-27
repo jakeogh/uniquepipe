@@ -59,7 +59,7 @@ def generate_truncated_string_hash(*,
 
 
 def generate_truncated_pdqhash(*,
-                               path: Path,
+                               string: Path,
                                length: int,
                                algorithm: str,
                                verbose: bool,
@@ -67,7 +67,7 @@ def generate_truncated_pdqhash(*,
                                accept_empty: bool = False,
                                ):
 
-    digest = hash_pdqhash(path=path,
+    digest = hash_pdqhash(path=string,
                           rotations=False,  # todo
                           verbose=verbose,
                           debug=debug,)
@@ -105,8 +105,8 @@ class UniquePipe():
             ic(string_hash)
         if string_hash not in self.hashes:
             self.hashes.add(string_hash)
-            return True
-        return False
+            return string_hash
+        return None
 
     def remove(self, string):  # .pop() returns arb element
         string_hash = self.algorithm_function(string=string,
