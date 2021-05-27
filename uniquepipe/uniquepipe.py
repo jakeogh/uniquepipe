@@ -91,6 +91,9 @@ def cli(items,
     if preload_delim_null:
         preload_null = True
 
+    if algorithm == 'pdqhash':
+        paths = True
+
     uniquepipe = UniquePipe(algorithm=algorithm,
                             length=length,
                             accept_empty=accept_empty,

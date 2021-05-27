@@ -22,6 +22,7 @@ import hashlib
 from pathlib import Path
 
 import numpy
+from bitstring import BitArray
 from hasher import rhash_file
 from pyphash import hash_pdqhash
 
@@ -35,6 +36,10 @@ except ImportError:
             kwargs.pop('file')
         print(*args, file=sys.stderr, **kwargs)
     ic = eprint
+
+
+def hamming_weight(a, b):
+    return (BitArray(a) ^ BitArray(b)).count(True)
 
 
 def generate_truncated_string_hash(*,
