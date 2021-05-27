@@ -46,6 +46,7 @@ def perhaps_invert(thing, *, invert):
 @click.command()
 @click.argument("items", type=str, nargs=-1)
 @click.option('--duplicates', is_flag=True)
+@click.option('--paths', is_flag=True)
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option('--count', is_flag=True)
@@ -63,17 +64,19 @@ def perhaps_invert(thing, *, invert):
               multiple=True)
 @click.option("--preload-delim-null", "--preload-null", is_flag=True)
 def cli(items,
-        duplicates,
+        duplicates: bool,
         preloads,
-        preload_delim_null,
-        verbose,
-        count,
-        exit_on_collision,
-        length,
-        accept_empty,
-        algorithm,
-        debug,
-        printn,):
+        preload_delim_null: bool,
+        verbose: bool,
+        count: int,
+        exit_on_collision: bool,
+        length: int,
+        accept_empty: bool,
+        algorithm: str,
+        debug: bool,
+        paths: bool,
+        printn: bool,
+        ):
 
     null = not printn
     end = '\n'
@@ -89,6 +92,7 @@ def cli(items,
     uniquepipe = UniquePipe(algorithm=algorithm,
                             length=length,
                             accept_empty=accept_empty,
+                            paths=paths,
                             verbose=verbose,
                             debug=debug,)
     for preload in preloads:
