@@ -134,8 +134,9 @@ def cli(items,
                                        null=null,
                                        debug=debug,
                                        verbose=verbose,):
-        digest = None
         new = False
+        distance = None
+        digest = None
         if verbose:
             ic(index, item)
 

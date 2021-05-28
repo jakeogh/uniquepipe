@@ -146,6 +146,7 @@ class UniquePipe():
                                               accept_empty=self.accept_empty,
                                               verbose=self.verbose,
                                               debug=self.debug,)
+        distance = None
         if self.debug:
             ic(string_hash)
         if self.hamming_distance is None:
@@ -168,6 +169,7 @@ class UniquePipe():
                     return False, distance, string_hash
 
             # by here, it's not close to something already in the set, so add it and return True
+            # if the set was empty, then there is no distance, so None is returned
             self.hashes.add(string_hash)
             return True, distance, string_hash
 
