@@ -149,6 +149,13 @@ class UniquePipe():
                 hamming_distance = hamming_weight(existing_hash, string_hash)
                 if hamming_distance <= self.hamming_distance:
                     ic(hamming_distance)
+                    # it's close to something in the set, so add it to the set, and return False
+                    self.hashes.add(string_hash)
+                    return False, string_hash
+
+            # by here, it's not close to something already in the set, so add it and return True
+            self.hashes.add(string_hash)
+            return True, string_hash
 
 
     def remove(self, string):  # .pop() returns arb element
