@@ -147,8 +147,8 @@ class UniquePipe():
             assert self.hamming_distance > 0
             for existing_hash in self.hashes:
                 hamming_distance = hamming_weight(existing_hash, string_hash)
+                ic(string_hash, existing_hash, hamming_distance)
                 if hamming_distance <= self.hamming_distance:
-                    ic(hamming_distance)
                     # it's close to something in the set, so add it to the set, and return False
                     self.hashes.add(string_hash)
                     return False, string_hash
