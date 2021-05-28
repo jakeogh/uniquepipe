@@ -151,8 +151,7 @@ class UniquePipe():
             for existing_hash in self.hashes:
                 hamming_distance = hamming_weight(existing_hash, string_hash)
                 eprint(string_hash.hex())
-                eprint(existing_hash.hex())
-                eprint(hamming_distance)
+                eprint(existing_hash.hex(), hamming_distance)
                 if hamming_distance <= self.hamming_distance:
                     ic(hamming_distance)
                     # it's close to something in the set, so add it to the set, and return False
