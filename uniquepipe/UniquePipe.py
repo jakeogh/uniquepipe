@@ -19,6 +19,7 @@
 
 import binascii
 import hashlib
+import sys
 from pathlib import Path
 
 import numpy
@@ -26,16 +27,18 @@ from bitstring import BitArray
 from hasher import rhash_file
 from pyphash import hash_pdqhash
 
+
+def eprint(*args, **kwargs):
+    if 'file' in kwargs.keys():
+        kwargs.pop('file')
+    print(*args, file=sys.stderr, **kwargs)
+
+
 try:
     from icecream import ic  # https://github.com/gruns/icecream
 except ImportError:
-    import sys
-
-    def eprint(*args, **kwargs):
-        if 'file' in kwargs.keys():
-            kwargs.pop('file')
-        print(*args, file=sys.stderr, **kwargs)
     ic = eprint
+
 
 
 def hamming_weight(a, b):
