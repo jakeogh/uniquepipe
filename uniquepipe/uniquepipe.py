@@ -54,6 +54,7 @@ def perhaps_invert(thing, *, invert):
 @click.option("--prepend", is_flag=True)
 @click.option("--accept-empty", is_flag=True)
 @click.option("--length", type=int, default=32)
+@click.option("--hamming-distance", type=int)
 @click.option("--algorithm", type=str, default='sha3_256')
 @click.option("--exit-on-collision", is_flag=True)
 @click.option("--preload", "preloads",
@@ -72,6 +73,7 @@ def cli(items,
         count: int,
         exit_on_collision: bool,
         length: int,
+        hamming_distance: int,
         accept_empty: bool,
         algorithm: str,
         debug: bool,
@@ -97,6 +99,7 @@ def cli(items,
     uniquepipe = UniquePipe(algorithm=algorithm,
                             length=length,
                             accept_empty=accept_empty,
+                            hamming_distance=hamming_distance,
                             paths=paths,
                             verbose=verbose,
                             debug=debug,)

@@ -108,6 +108,7 @@ class UniquePipe():
                  debug: bool,
                  accept_empty: bool,
                  paths: bool,
+                 hamming_distance: int = None,
                  length: int = 32,
                  algorithm: str = 'sha3_256',):
         self.hashes = set()
@@ -116,6 +117,7 @@ class UniquePipe():
         self.verbose = verbose
         self.debug = debug
         self.accept_empty = accept_empty
+        self.hamming_distance = hamming_distance
         if algorithm == 'pdqhash':
             assert paths
             self.algorithm_function = generate_truncated_pdqhash
@@ -136,10 +138,18 @@ class UniquePipe():
                                               debug=self.debug,)
         if self.debug:
             ic(string_hash)
-        if string_hash not in self.hashes:
-            self.hashes.add(string_hash)
-            return True, string_hash
-        return False, string_hash   # needed to be able to --prepend to duplicates
+        if self.hamming_distance is None:
+            if string_hash not in self.hashes:
+                self.hashes.add(string_hash)
+                return True, string_hash
+            return False, string_hash   # needed to be able to --prepend to duplicates
+        else:
+            assert self.hamming_distance > 0
+            for existing_hash in self.hashes:
+                hamming_distance = hamming_weight(existing_hash, string_hash)
+                if hamming_distance <= self.hamming_distance:
+                    ic(hamming_distance)
+
 
     def remove(self, string):  # .pop() returns arb element
         string_hash = self.algorithm_function(string=string,
