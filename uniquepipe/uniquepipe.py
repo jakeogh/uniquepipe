@@ -55,6 +55,7 @@ def perhaps_invert(thing, *, invert):
 @click.option("--accept-empty", is_flag=True)
 @click.option("--length", type=int, default=32)
 @click.option("--hamming-distance", type=int)
+@click.option("--show-closest-hamming-distance", is_flag=True)
 @click.option("--algorithm", type=str, default='sha3_256')
 @click.option("--exit-on-collision", is_flag=True)
 @click.option("--preload", "preloads",
@@ -73,6 +74,7 @@ def cli(items,
         count: int,
         exit_on_collision: bool,
         length: int,
+        show_closest_hamming_distance: int,
         hamming_distance: int,
         accept_empty: bool,
         algorithm: str,
@@ -140,13 +142,16 @@ def cli(items,
         if len(item) == 0:
             ic('empty value found:', index, item, accept_empty)
 
-        new, digest = uniquepipe.filter(item)
+        new, distance, digest = uniquepipe.filter(item)
         if new:
             unique_count += 1
             if not count:
                 if not duplicates:
                     if prepend:
-                        print(digest.hex(), item, end=end)
+                        if show_closest_hamming_distance:
+                            print(digest.hex(), distance, item, end=end)
+                        else:
+                            print(digest.hex(), item, end=end)
                     else:
                         print(item, end=end)
         else:
@@ -159,7 +164,10 @@ def cli(items,
                 raise ValueError("collision: {}".format(item))
             if duplicates:
                 if prepend:
-                    print(digest.hex(), item, end=end)
+                    if show_closest_hamming_distance:
+                        print(digest.hex(), distance, item, end=end)
+                    else:
+                        print(digest.hex(), item, end=end)
                 else:
                     print(item, end=end)
 

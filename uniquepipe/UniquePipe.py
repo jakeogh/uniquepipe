@@ -151,8 +151,8 @@ class UniquePipe():
         if self.hamming_distance is None:
             if string_hash not in self.hashes:
                 self.hashes.add(string_hash)
-                return True, string_hash
-            return False, string_hash   # needed to be able to --prepend to duplicates
+                return True, None, string_hash
+            return False, None, string_hash   # needed to be able to --prepend to duplicates
         else:
             assert self.hamming_distance > 0
             for existing_hash in self.hashes:
@@ -165,11 +165,11 @@ class UniquePipe():
                         ic(distance)
                     # it's close to something in the set, so add it to the set, and return False
                     self.hashes.add(string_hash)
-                    return False, string_hash
+                    return False, distance, string_hash
 
             # by here, it's not close to something already in the set, so add it and return True
             self.hashes.add(string_hash)
-            return True, string_hash
+            return True, distance, string_hash
 
 
     def remove(self, string):  # .pop() returns arb element
