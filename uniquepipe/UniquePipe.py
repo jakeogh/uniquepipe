@@ -25,7 +25,6 @@ from pathlib import Path
 import numpy
 from bitstring import BitArray
 from hasher import rhash_file
-from pyphash import hash_pdqhash
 
 
 def eprint(*args, **kwargs):
@@ -130,6 +129,7 @@ class UniquePipe():
         self.hamming_distance = hamming_distance
         if algorithm == 'pdqhash':
             assert paths
+            from pyphash import hash_pdqhash
             self.algorithm_function = generate_truncated_pdqhash
         else:
             if paths:
