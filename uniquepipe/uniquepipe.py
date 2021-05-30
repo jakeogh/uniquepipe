@@ -55,7 +55,7 @@ def perhaps_invert(thing, *, invert):
 @click.option("--accept-empty", is_flag=True)
 @click.option("--length", type=int, default=32)
 @click.option("--distance", type=int)
-@click.option("--show-closest-hamming-distance", is_flag=True)
+@click.option("--show-closest-distance", is_flag=True)
 @click.option("--algorithm", type=str, default='sha3_256')
 @click.option("--exit-on-collision", is_flag=True)
 @click.option("--preload", "preloads",
