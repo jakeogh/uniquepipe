@@ -24,6 +24,7 @@ import click
 from enumerate_input import enumerate_input
 
 from uniquepipe import UniquePipe
+from uniquepipe.UniquePipe import HashAlgorithmError
 
 
 def eprint(*args, **kwargs):
@@ -143,7 +144,13 @@ def cli(items,
         if len(item) == 0:
             ic('empty value found:', index, item, accept_empty)
 
-        new, distance, digest = uniquepipe.filter(item)
+        try:
+            new, distance, digest = uniquepipe.filter(item)
+        except HashAlgorithmError as e:
+            if verbose:
+                ic(e)
+            continue
+
         if new:
             unique_count += 1
             if not count:

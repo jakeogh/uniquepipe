@@ -40,6 +40,9 @@ except ImportError:
     ic = eprint
 
 
+class HashAlgorithmError(ValueError):
+    pass
+
 
 def hamming_distance(a, b, *,
                      verbose: bool = False,
@@ -111,7 +114,7 @@ def generate_truncated_pdqhash(*,
 
     if digest:
         return digest[0:length]
-    return None
+    raise HashAlgorithmError(string)
 
 
 class UniquePipe():
