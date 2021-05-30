@@ -73,9 +73,7 @@ def generate_truncated_string_hash(*,
     digest = getattr(hashlib, algorithm)(byte_string).digest()
     #hexdigest = digest.hex()
     #return hexdigest[0:length - 1]  # for sha3_256 this was cutting it in half from 256 to 128 if length == 32
-    if digest:
-        return digest[0:length]
-    return None
+    return digest[0:length]
 
 
 def generate_truncated_file_hash(*,
@@ -111,7 +109,9 @@ def generate_truncated_pdqhash(*,
                           verbose=verbose,
                           debug=debug,)
 
-    return digest[0:length]
+    if digest:
+        return digest[0:length]
+    return None
 
 
 class UniquePipe():
