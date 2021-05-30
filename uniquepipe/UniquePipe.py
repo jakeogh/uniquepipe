@@ -73,7 +73,9 @@ def generate_truncated_string_hash(*,
     digest = getattr(hashlib, algorithm)(byte_string).digest()
     #hexdigest = digest.hex()
     #return hexdigest[0:length - 1]  # for sha3_256 this was cutting it in half from 256 to 128 if length == 32
-    return digest[0:length]
+    if digest:
+        return digest[0:length]
+    return None
 
 
 def generate_truncated_file_hash(*,
