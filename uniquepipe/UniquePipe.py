@@ -117,7 +117,7 @@ class UniquePipe():
                  debug: bool,
                  accept_empty: bool,
                  paths: bool,
-                 hamming_distance: int = None,
+                 distance: int = None,
                  length: int = 32,
                  algorithm: str = 'sha3_256',):
         self.hashes = set()
@@ -126,7 +126,7 @@ class UniquePipe():
         self.verbose = verbose
         self.debug = debug
         self.accept_empty = accept_empty
-        self.hamming_distance = hamming_distance
+        self.distance = distance
         if algorithm == 'pdqhash':
             assert paths
             from pyphash import hash_pdqhash
@@ -149,19 +149,19 @@ class UniquePipe():
         distance = None
         if self.debug:
             ic(string_hash)
-        if self.hamming_distance is None:
+        if self.distance is None:
             if string_hash not in self.hashes:
                 self.hashes.add(string_hash)
                 return True, None, string_hash
             return False, None, string_hash   # needed to be able to --prepend to duplicates
         else:
-            assert self.hamming_distance > 0
+            assert self.distance > 0
             for existing_hash in self.hashes:
                 distance = hamming_distance(existing_hash, string_hash)
                 if self.verbose:
                     eprint(string_hash.hex())
                     eprint(existing_hash.hex(), distance)
-                if distance <= self.hamming_distance:
+                if distance <= self.distance:
                     if self.verbose:
                         ic(distance)
                     # it's close to something in the set, so add it to the set, and return False
@@ -172,7 +172,6 @@ class UniquePipe():
             # if the set was empty, then there is no distance, so None is returned
             self.hashes.add(string_hash)
             return True, distance, string_hash
-
 
     def remove(self, string):  # .pop() returns arb element
         string_hash = self.algorithm_function(string=string,

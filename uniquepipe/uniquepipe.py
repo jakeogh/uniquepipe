@@ -74,8 +74,8 @@ def cli(items,
         count: int,
         exit_on_collision: bool,
         length: int,
-        show_closest_hamming_distance: int,
-        hamming_distance: int,
+        show_closest_distance: int,
+        distance: int,
         accept_empty: bool,
         algorithm: str,
         debug: bool,
@@ -101,7 +101,7 @@ def cli(items,
     uniquepipe = UniquePipe(algorithm=algorithm,
                             length=length,
                             accept_empty=accept_empty,
-                            hamming_distance=hamming_distance,
+                            distance=distance,
                             paths=paths,
                             verbose=verbose,
                             debug=debug,)
@@ -149,7 +149,7 @@ def cli(items,
             if not count:
                 if not duplicates:
                     if prepend:
-                        if show_closest_hamming_distance:
+                        if show_closest_distance:
                             print(digest.hex(), distance, item, end=end)
                         else:
                             print(digest.hex(), item, end=end)
@@ -165,7 +165,7 @@ def cli(items,
                 raise ValueError("collision: {}".format(item))
             if duplicates:
                 if prepend:
-                    if show_closest_hamming_distance:
+                    if show_closest_distance:
                         print(digest.hex(), distance, item, end=end)
                     else:
                         print(digest.hex(), item, end=end)
