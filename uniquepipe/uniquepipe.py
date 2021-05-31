@@ -121,7 +121,12 @@ def cli(items,
                                                ):
                 if verbose:
                     ic('preload:', index, item)
-                uniquepipe.filter(item)
+                try:
+                    uniquepipe.filter(item)
+                except HashAlgorithmError as e:
+                    if verbose:
+                        ic(e)
+                    continue
         if verbose:
             ic('preloaded:', len(uniquepipe))
 
