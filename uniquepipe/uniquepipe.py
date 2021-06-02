@@ -48,6 +48,7 @@ def perhaps_invert(thing, *, invert):
 @click.argument("items", type=str, nargs=-1)
 @click.option('--duplicates', is_flag=True)
 @click.option('--paths', is_flag=True)
+@click.option('--images', is_flag=True)
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option('--count', is_flag=True)
@@ -81,6 +82,7 @@ def cli(items,
         algorithm: str,
         debug: bool,
         paths: bool,
+        images: bool,
         printn: bool,
         prepend: bool,
         ):
@@ -95,6 +97,9 @@ def cli(items,
     preload_null = False
     if preload_delim_null:
         preload_null = True
+
+    if images:
+        algorithm = 'pdqhash'
 
     if algorithm == 'pdqhash':
         paths = True
