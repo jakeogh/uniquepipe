@@ -103,6 +103,9 @@ def cli(items,
 
     if algorithm == 'pdqhash':
         paths = True
+        if not distance:
+            distance = 4
+            eprint('Warning: using default distance:', distance)
 
     uniquepipe = UniquePipe(algorithm=algorithm,
                             length=length,
