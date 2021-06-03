@@ -30,9 +30,11 @@ from uniquepipe.UniquePipe import HashAlgorithmError
 
 
 def eprint(*args, **kwargs):
+    #color = Fore.GREEN
+    color = Fore.MAGENTA
     if 'file' in kwargs.keys():
         kwargs.pop('file')
-    print(Fore.GREEN, file=sys.stderr, end='')
+    print(color, file=sys.stderr, end='')
     if 'end' in kwargs.keys():
         print(*args, file=sys.stderr, **kwargs)
         print(Style.RESET_ALL, file=sys.stderr, end='')
