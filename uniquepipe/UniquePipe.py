@@ -26,6 +26,12 @@ import numpy
 from bitstring import BitArray
 from hasher import rhash_file
 from pyphash import hash_pdqhash
+from typing import List
+from typing import Sequence
+from typing import Generator
+from typing import Iterable
+from typing import ByteString
+from typing import Optional
 
 
 def eprint(*args, **kwargs):
@@ -98,14 +104,14 @@ def generate_truncated_file_hash(*,
     return digest[0:length]
 
 
-def generate_truncated_pdqhash(*,
-                               string: str,
-                               length: int,
-                               algorithm: str,
-                               verbose: bool,
-                               debug: bool,
-                               accept_empty: bool = False,
-                               ):
+def generate_pdqhash(*,
+                     string: str,
+                     length: int,
+                     algorithm: str,
+                     verbose: bool,
+                     debug: bool,
+                     accept_empty: bool = False,
+                     ):
 
     digest = hash_pdqhash(path=Path(string),
                           rotations=False,  # todo
@@ -113,7 +119,7 @@ def generate_truncated_pdqhash(*,
                           debug=debug,)
 
     if digest:
-        return digest[0:length]
+        return digest
     raise HashAlgorithmError(string)
 
 
@@ -123,7 +129,7 @@ class UniquePipe():
                  debug: bool,
                  accept_empty: bool,
                  paths: bool,
-                 distance: int = None,
+                 distance: Optional[int] = None,
                  length: int = 32,
                  algorithm: str = 'sha3_256',):
         self.hashes = set()
@@ -135,7 +141,7 @@ class UniquePipe():
         self.distance = distance
         if algorithm == 'pdqhash':
             assert paths
-            self.algorithm_function = generate_truncated_pdqhash
+            self.algorithm_function = generate_pdqhash
         else:
             if paths:
                 self.algorithm_function = generate_truncated_file_hash
@@ -159,24 +165,23 @@ class UniquePipe():
                 self.hashes.add(string_hash)
                 return True, None, string_hash
             return False, None, string_hash   # needed to be able to --prepend to duplicates
-        else:
-            assert self.distance > 0
-            for existing_hash in self.hashes:
-                distance = hamming_distance(existing_hash, string_hash)
+        assert self.distance > 0
+        for existing_hash in self.hashes:
+            distance = hamming_distance(existing_hash, string_hash)
+            if self.verbose:
+                eprint(string_hash.hex())
+                eprint(existing_hash.hex(), distance)
+            if distance <= self.distance:
                 if self.verbose:
-                    eprint(string_hash.hex())
-                    eprint(existing_hash.hex(), distance)
-                if distance <= self.distance:
-                    if self.verbose:
-                        ic(distance)
-                    # it's close to something in the set, so add it to the set, and return False
-                    self.hashes.add(string_hash)
-                    return False, distance, string_hash
+                    ic(distance)
+                # it's close to something in the set, so add it to the set, and return False
+                self.hashes.add(string_hash)
+                return False, distance, string_hash
 
-            # by here, it's not close to something already in the set, so add it and return True
-            # if the set was empty, then there is no distance, so None is returned
-            self.hashes.add(string_hash)
-            return True, distance, string_hash
+        # by here, it's not close to something already in the set, so add it and return True
+        # if the set was empty, then there is no distance, so None is returned
+        self.hashes.add(string_hash)
+        return True, distance, string_hash
 
     def remove(self, string):  # .pop() returns arb element
         string_hash = self.algorithm_function(string=string,
