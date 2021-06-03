@@ -71,17 +71,11 @@ def print_result(*,
         output_list.append(digest.hex())
         if show_closest_distance:
             output_list.append(distance)
-            #print(digest.hex(), distance, item, end=end, file=output_file)
-        #else:
-            #print(digest.hex(), item, end=end, file=output_file)
         output_list.append(item)
 
     else:
         if show_closest_distance:
             output_list.append(distance)
-            #print(distance, item, end=end, file=output_file)
-        #else:
-            #print(item, end=end, file=output_file)
         output_list.append(item)
 
     print_list(output_list=output_list, end=end, stderr=stderr)
@@ -146,6 +140,7 @@ def cli(items,
     if images:
         algorithm = 'pdqhash'
 
+    ic(algorithm)
     if algorithm == 'pdqhash':
         paths = True
         if not distance:
