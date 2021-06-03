@@ -33,8 +33,20 @@ def eprint(*args, **kwargs):
     if 'file' in kwargs.keys():
         kwargs.pop('file')
     print(Fore.GREEN, file=sys.stderr, end='')
-    print(*args, file=sys.stderr, **kwargs)
-    print(Style.RESET_ALL, file=sys.stderr, end='')
+    if 'end' in kwargs.keys():
+        print(*args, file=sys.stderr, **kwargs)
+        print(Style.RESET_ALL, file=sys.stderr, end='')
+    else:
+        print(*args, file=sys.stderr, **kwargs, end='')
+        print(Style.RESET_ALL, file=sys.stderr)
+
+
+#def eprint(*args, **kwargs):
+#    if 'file' in kwargs.keys():
+#        kwargs.pop('file')
+#    print(Fore.GREEN, file=sys.stderr, end='')
+#    print(*args, file=sys.stderr, **kwargs)
+#    print(Style.RESET_ALL, file=sys.stderr, end='')
 
 
 try:
