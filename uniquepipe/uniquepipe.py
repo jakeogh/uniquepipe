@@ -49,6 +49,7 @@ def eprint(*args, **kwargs):
     if 'end' in kwargs.keys():
         print(*args, file=sys.stderr, **kwargs)
         print("\n111111111111111\n", Style.RESET_ALL, file=sys.stderr, end='')
+        print("\n111111111111111\n", Style.RESET_ALL, file=sys.stderr)
     else:
         print(*args, file=sys.stderr, **kwargs, end='')
         print("\n222222222222222\n", Style.RESET_ALL, file=sys.stderr)
