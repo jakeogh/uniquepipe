@@ -44,17 +44,21 @@ def perhaps_invert(thing, *, invert):
         return not thing
 
 
-def print_result(*, digest, distance, item, prepend, show_closest_distance, end,):
+def print_result(*, digest, distance, item, prepend, show_closest_distance, end, stderr,):
+    output_file = sys.stdout
+    if stderr:
+        output_file = sys.stderr
+
     if prepend:
         if show_closest_distance:
-            print(digest.hex(), distance, item, end=end)
+            print(digest.hex(), distance, item, end=end, file=output_file)
         else:
-            print(digest.hex(), item, end=end)
+            print(digest.hex(), item, end=end, file=output_file)
     else:
         if show_closest_distance:
-            print(distance, item, end=end)
+            print(distance, item, end=end, file=output_file)
         else:
-            print(item, end=end)
+            print(item, end=end, file=output_file)
 
 
 
@@ -72,6 +76,7 @@ def print_result(*, digest, distance, item, prepend, show_closest_distance, end,
 @click.option("--length", type=int, default=32)
 @click.option("--distance", type=int)
 @click.option("--show-closest-distance", is_flag=True)
+@click.option("--show-skipped", is_flag=True)
 @click.option("--algorithm", type=str, default='sha3_256')
 @click.option("--exit-on-collision", is_flag=True)
 @click.option("--preload", "preloads",
@@ -91,6 +96,7 @@ def cli(items,
         exit_on_collision: bool,
         length: int,
         show_closest_distance: int,
+        show_skipped: int,
         distance: int,
         accept_empty: bool,
         algorithm: str,
@@ -187,17 +193,8 @@ def cli(items,
                                  item=item,
                                  prepend=prepend,
                                  show_closest_distance=show_closest_distance,
-                                 end=end,)
-                    #if prepend:
-                    #    if show_closest_distance:
-                    #        print(digest.hex(), distance, item, end=end)
-                    #    else:
-                    #        print(digest.hex(), item, end=end)
-                    #else:
-                    #    if show_closest_distance:
-                    #        print(distance, item, end=end)
-                    #    else:
-                    #        print(item, end=end)
+                                 end=end,
+                                 stderr=False,)
         else:
             duplicate_count += 1
             if exit_on_collision:
@@ -207,16 +204,33 @@ def cli(items,
                 ic(sys.getsizeof(uniquepipe))
                 raise ValueError("collision: {}".format(item))
             if duplicates:
-                if prepend:
-                    if show_closest_distance:
-                        print(digest.hex(), distance, item, end=end)
-                    else:
-                        print(digest.hex(), item, end=end)
-                else:
-                    if show_closest_distance:
-                        print(distance, item, end=end)
-                    else:
-                        print(item, end=end)
+                print_result(digest=digest,
+                             distance=distance,
+                             item=item,
+                             prepend=prepend,
+                             show_closest_distance=show_closest_distance,
+                             end=end,
+                             stderr=False,)
+                #if prepend:
+                #    if show_closest_distance:
+                #        print(digest.hex(), distance, item, end=end)
+                #    else:
+                #        print(digest.hex(), item, end=end)
+                #else:
+                #    if show_closest_distance:
+                #        print(distance, item, end=end)
+                #    else:
+                #        print(item, end=end)
+            if show_skipped:
+                print_result(digest=digest,
+                             distance=distance,
+                             item=item,
+                             prepend=prepend,
+                             show_closest_distance=show_closest_distance,
+                             end=end,
+                             stderr=True,)
+
+
 
     if count:
         if duplicates:
