@@ -44,6 +44,20 @@ def perhaps_invert(thing, *, invert):
         return not thing
 
 
+def print_result(*, digest, distance, item, prepend, show_closest_distance, end,):
+    if prepend:
+        if show_closest_distance:
+            print(digest.hex(), distance, item, end=end)
+        else:
+            print(digest.hex(), item, end=end)
+    else:
+        if show_closest_distance:
+            print(distance, item, end=end)
+        else:
+            print(item, end=end)
+
+
+
 @click.command()
 @click.argument("items", type=str, nargs=-1)
 @click.option('--duplicates', is_flag=True)
@@ -168,16 +182,22 @@ def cli(items,
             unique_count += 1
             if not count:
                 if not duplicates:
-                    if prepend:
-                        if show_closest_distance:
-                            print(digest.hex(), distance, item, end=end)
-                        else:
-                            print(digest.hex(), item, end=end)
-                    else:
-                        if show_closest_distance:
-                            print(distance, item, end=end)
-                        else:
-                            print(item, end=end)
+                    print_result(digest=digest,
+                                 distance=distance,
+                                 item=item,
+                                 prepend=prepend,
+                                 show_closest_distance=show_closest_distance,
+                                 end=end,)
+                    #if prepend:
+                    #    if show_closest_distance:
+                    #        print(digest.hex(), distance, item, end=end)
+                    #    else:
+                    #        print(digest.hex(), item, end=end)
+                    #else:
+                    #    if show_closest_distance:
+                    #        print(distance, item, end=end)
+                    #    else:
+                    #        print(item, end=end)
         else:
             duplicate_count += 1
             if exit_on_collision:
@@ -193,7 +213,10 @@ def cli(items,
                     else:
                         print(digest.hex(), item, end=end)
                 else:
-                    print(item, end=end)
+                    if show_closest_distance:
+                        print(distance, item, end=end)
+                    else:
+                        print(item, end=end)
 
     if count:
         if duplicates:
