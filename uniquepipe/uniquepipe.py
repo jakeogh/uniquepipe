@@ -23,14 +23,16 @@ import sys
 import click
 from colorama import Fore
 from colorama import Style
-from colorama import init as coloramainit
-
-coloramainit(autoreset=True)
-
 from enumerate_input import enumerate_input
 
 from uniquepipe import UniquePipe
 from uniquepipe.UniquePipe import HashAlgorithmError
+
+#from colorama import init as coloramainit
+#from termcolor import colored
+#coloramainit(autoreset=True)
+
+
 
 
 def str_list(line):
@@ -47,17 +49,11 @@ def eprint(*args, **kwargs):
     #color = Fore.YELLOW
     if 'file' in kwargs.keys():
         kwargs.pop('file')
-    print(Style.BRIGHT + color, file=sys.stderr, end='')
     if 'end' in kwargs.keys():
-        print(*args, file=sys.stderr, **kwargs)
-        #print("\n111111111111111\n", Style.RESET_ALL, file=sys.stderr, end='')
-        #print("\n111111111111111\n", Style.RESET_ALL, file=sys.stderr)
-        #print(Style.RESET_ALL, file=sys.stderr)
-    else:
-        print(*args, file=sys.stderr, **kwargs, end='')
-        #print("\n222222222222222\n", Style.RESET_ALL, file=sys.stderr)
-
-#    print(Style.RESET_ALL, file=sys.stderr)
+        kwargs.pop('end')
+    print(Style.BRIGHT + color, file=sys.stderr, end='')
+    print(*args, file=sys.stderr, **kwargs, end='')
+    print(Style.RESET_ALL, file=sys.stderr)
 
 
 try:
