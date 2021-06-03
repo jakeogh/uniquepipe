@@ -29,6 +29,14 @@ from uniquepipe import UniquePipe
 from uniquepipe.UniquePipe import HashAlgorithmError
 
 
+def str_list(line):
+    line = [str(thing) for thing in line]   # angryfiles...
+    if len(line) == 1:
+        return line[0]
+    line = ' '.join(line)
+    return line
+
+
 def eprint(*args, **kwargs):
     #color = Fore.GREEN
     color = Fore.MAGENTA
@@ -67,6 +75,7 @@ def print_list(*, output_list, end, stderr,):
     output_file = sys.stdout
     if stderr:
         output_file = sys.stderr
+    output_list = str_list(output_list)
     print(output_list, end=end, file=output_file)
 
 
