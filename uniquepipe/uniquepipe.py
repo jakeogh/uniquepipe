@@ -23,6 +23,8 @@ import sys
 import click
 from colorama import Fore
 from colorama import Style
+#from colorama import init
+#init(autoreset=True)
 from enumerate_input import enumerate_input
 
 from uniquepipe import UniquePipe
@@ -46,10 +48,10 @@ def eprint(*args, **kwargs):
     print(Style.BRIGHT + color, file=sys.stderr, end='')
     if 'end' in kwargs.keys():
         print(*args, file=sys.stderr, **kwargs)
-        print(Style.RESET_ALL, file=sys.stderr, end='')
+        print("1", Style.RESET_ALL, file=sys.stderr, end='')
     else:
         print(*args, file=sys.stderr, **kwargs, end='')
-        print(Style.RESET_ALL, file=sys.stderr)
+        print("2", Style.RESET_ALL, file=sys.stderr)
 
 
 try:
