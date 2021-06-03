@@ -44,22 +44,47 @@ def perhaps_invert(thing, *, invert):
         return not thing
 
 
-def print_result(*, digest, distance, item, prepend, show_closest_distance, end, stderr,):
+def print_list(*, output_list, end, stderr,):
     output_file = sys.stdout
     if stderr:
         output_file = sys.stderr
+    print(output_list, end=end, file=output_file)
+
+
+def print_result(*,
+                 digest,
+                 distance,
+                 item,
+                 prepend,
+                 show_closest_distance,
+                 end,
+                 stderr,
+                 skipped,
+                 ):
+
+    output_list = []
+    if skipped:
+        assert stderr
+        output_list.append('skipped:')
 
     if prepend:
+        output_list.append(digest.hex())
         if show_closest_distance:
-            print(digest.hex(), distance, item, end=end, file=output_file)
-        else:
-            print(digest.hex(), item, end=end, file=output_file)
+            output_list.append(distance)
+            #print(digest.hex(), distance, item, end=end, file=output_file)
+        #else:
+            #print(digest.hex(), item, end=end, file=output_file)
+        output_list.append(item)
+
     else:
         if show_closest_distance:
-            print(distance, item, end=end, file=output_file)
-        else:
-            print(item, end=end, file=output_file)
+            output_list.append(distance)
+            #print(distance, item, end=end, file=output_file)
+        #else:
+            #print(item, end=end, file=output_file)
+        output_list.append(item)
 
+    print_list(output_list=output_list, end=end, stderr=stderr)
 
 
 @click.command()
@@ -194,6 +219,7 @@ def cli(items,
                                  prepend=prepend,
                                  show_closest_distance=show_closest_distance,
                                  end=end,
+                                 skipped=False,
                                  stderr=False,)
         else:
             duplicate_count += 1
@@ -210,17 +236,8 @@ def cli(items,
                              prepend=prepend,
                              show_closest_distance=show_closest_distance,
                              end=end,
+                             skipped=False,
                              stderr=False,)
-                #if prepend:
-                #    if show_closest_distance:
-                #        print(digest.hex(), distance, item, end=end)
-                #    else:
-                #        print(digest.hex(), item, end=end)
-                #else:
-                #    if show_closest_distance:
-                #        print(distance, item, end=end)
-                #    else:
-                #        print(item, end=end)
             if show_skipped:
                 print_result(digest=digest,
                              distance=distance,
@@ -228,6 +245,7 @@ def cli(items,
                              prepend=prepend,
                              show_closest_distance=show_closest_distance,
                              end=end,
+                             skipped=True,
                              stderr=True,)
 
 
