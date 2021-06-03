@@ -21,6 +21,8 @@
 import sys
 
 import click
+from colorama import Fore
+from colorama import Style
 from enumerate_input import enumerate_input
 
 from uniquepipe import UniquePipe
@@ -30,7 +32,9 @@ from uniquepipe.UniquePipe import HashAlgorithmError
 def eprint(*args, **kwargs):
     if 'file' in kwargs.keys():
         kwargs.pop('file')
+    print(Fore.GREEN, file=sys.stderr, end='')
     print(*args, file=sys.stderr, **kwargs)
+    print(Style.RESET_ALL, file=sys.stderr, end='')
 
 
 try:
