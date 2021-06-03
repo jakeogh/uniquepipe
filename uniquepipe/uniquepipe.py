@@ -52,14 +52,6 @@ def eprint(*args, **kwargs):
         print(Style.RESET_ALL, file=sys.stderr)
 
 
-#def eprint(*args, **kwargs):
-#    if 'file' in kwargs.keys():
-#        kwargs.pop('file')
-#    print(Fore.GREEN, file=sys.stderr, end='')
-#    print(*args, file=sys.stderr, **kwargs)
-#    print(Style.RESET_ALL, file=sys.stderr, end='')
-
-
 try:
     from icecream import ic  # https://github.com/gruns/icecream
 except ImportError:
@@ -72,11 +64,14 @@ def perhaps_invert(thing, *, invert):
 
 
 def print_list(*, output_list, end, stderr,):
-    output_file = sys.stdout
-    if stderr:
-        output_file = sys.stderr
+    #output_file = sys.stdout
+    #if stderr:
+    #    output_file = sys.stderr
     output_list = str_list(output_list)
-    print(output_list, end=end, file=output_file)
+    if stderr:
+        eprint(output_list, end=end)
+    else:
+        print(output_list, end=end)
 
 
 def print_result(*,
