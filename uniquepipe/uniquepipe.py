@@ -174,7 +174,10 @@ def cli(items,
                         else:
                             print(digest.hex(), item, end=end)
                     else:
-                        print(item, end=end)
+                        if show_closest_distance:
+                            print(distance, item, end=end)
+                        else:
+                            print(item, end=end)
         else:
             duplicate_count += 1
             if exit_on_collision:
