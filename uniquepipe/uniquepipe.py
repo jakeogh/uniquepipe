@@ -23,8 +23,10 @@ import sys
 import click
 from colorama import Fore
 from colorama import Style
-#from colorama import init
-#init(autoreset=True)
+from colorama import init as coloramainit
+
+coloramainit(autoreset=True)
+
 from enumerate_input import enumerate_input
 
 from uniquepipe import UniquePipe
@@ -55,7 +57,7 @@ def eprint(*args, **kwargs):
         print(*args, file=sys.stderr, **kwargs, end='')
         #print("\n222222222222222\n", Style.RESET_ALL, file=sys.stderr)
 
-    print(Style.RESET_ALL, file=sys.stderr)
+#    print(Style.RESET_ALL, file=sys.stderr)
 
 
 try:
