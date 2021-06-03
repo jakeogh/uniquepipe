@@ -87,12 +87,15 @@ def print_result(*,
                  end,
                  stderr,
                  skipped,
+                 verbose: bool,
+                 debug: bool,
                  ):
 
     output_list = []
     if skipped:
         assert stderr
-        output_list.append('skipped:')
+        if verbose:
+            output_list.append('skipped:')
 
     if prepend:
         output_list.append(digest.hex())
@@ -242,7 +245,10 @@ def cli(items,
                                  show_closest_distance=show_closest_distance,
                                  end=end,
                                  skipped=False,
-                                 stderr=False,)
+                                 stderr=False,
+                                 verbose=verbose,
+                                 debug=debug,
+                                 )
         else:
             duplicate_count += 1
             if exit_on_collision:
@@ -259,7 +265,10 @@ def cli(items,
                              show_closest_distance=show_closest_distance,
                              end=end,
                              skipped=False,
-                             stderr=False,)
+                             verbose=verbose,
+                             debug=debug,
+                             stderr=False,
+                             )
             if show_skipped:
                 print_result(digest=digest,
                              distance=distance,
@@ -268,7 +277,10 @@ def cli(items,
                              show_closest_distance=show_closest_distance,
                              end=end,
                              skipped=True,
-                             stderr=True,)
+                             verbose=verbose,
+                             debug=debug,
+                             stderr=True,
+                             )
 
 
 
