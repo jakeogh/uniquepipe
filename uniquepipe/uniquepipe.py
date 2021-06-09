@@ -115,7 +115,7 @@ def print_result(*,
 @click.argument("items", type=str, nargs=-1)
 @click.option('--duplicates', is_flag=True)
 @click.option('--paths', is_flag=True)
-@click.option('--image', '--images', is_flag=True)
+@click.option('--images', '--image', is_flag=True)
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option('--count', is_flag=True)
