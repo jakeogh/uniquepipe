@@ -21,17 +21,17 @@ import binascii
 import hashlib
 import sys
 from pathlib import Path
-
-import numpy
-from bitstring import BitArray
-from hasher import rhash_file
-from pyphash import hash_pdqhash
-from typing import List
-from typing import Sequence
+from typing import ByteString
 from typing import Generator
 from typing import Iterable
-from typing import ByteString
+from typing import List
 from typing import Optional
+from typing import Sequence
+
+#import numpy
+from bitstring import BitArray
+from hashtool import rhash_file
+from pyphash import hash_pdqhash
 
 
 def eprint(*args, **kwargs):
@@ -68,7 +68,7 @@ def generate_truncated_string_hash(*,
                                    verbose: bool,
                                    debug: bool,
                                    accept_empty: bool = False,
-                                   ):
+                                   ) -> bytes:
     string = str(string)  # todo
     assert algorithm is not None
     if not accept_empty:
@@ -95,10 +95,11 @@ def generate_truncated_file_hash(*,
                                  ):
 
     path = Path(string).resolve()
-    hexdigest = rhash_file(path=path,
-                           algorithm=algorithm,
-                           verbose=verbose,
-                           debug=debug,)
+    hexdigests = rhash_file(path=path,
+                            algorithms=[algorithm],
+                            verbose=verbose,
+                            debug=debug,)
+    hexdigest = hexdigests[algorithm]
 
     digest = binascii.unhexlify(hexdigest)
     return digest[0:length]
