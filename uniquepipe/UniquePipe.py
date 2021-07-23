@@ -27,23 +27,15 @@ from typing import Iterable
 from typing import List
 from typing import Optional
 from typing import Sequence
+from typing import Union
 
+from asserttool import eprint
+from asserttool import ic
+from asserttool import increment_debug
 #import numpy
 from bitstring import BitArray
 from hashtool import rhash_file
 from pyphash import hash_pdqhash
-
-
-def eprint(*args, **kwargs):
-    if 'file' in kwargs.keys():
-        kwargs.pop('file')
-    print(*args, file=sys.stderr, **kwargs)
-
-
-try:
-    from icecream import ic  # https://github.com/gruns/icecream
-except ImportError:
-    ic = eprint
 
 
 class HashAlgorithmError(ValueError):
@@ -60,7 +52,7 @@ def hamming_distance(a, b, *,
 
     return distance
 
-
+@increment_debug
 def generate_truncated_string_hash(*,
                                    string: str,
                                    length: int,
@@ -125,6 +117,7 @@ def generate_pdqhash(*,
 
 
 class UniquePipe():
+    @increment_debug
     def __init__(self, *,
                  verbose: bool,
                  debug: bool,
@@ -132,7 +125,8 @@ class UniquePipe():
                  paths: bool,
                  distance: Optional[int] = None,
                  length: int = 32,
-                 algorithm: str = 'sha3_256',):
+                 algorithm: str = 'sha3_256',
+                 ):
         self.hashes = set()
         self.length = length
         self.algorithm = algorithm
@@ -148,7 +142,7 @@ class UniquePipe():
                 self.algorithm_function = generate_truncated_file_hash
             else:
                 self.algorithm_function = generate_truncated_string_hash
-        if verbose:
+        if debug:
             ic(self.algorithm_function)
 
     def filter(self, string):
