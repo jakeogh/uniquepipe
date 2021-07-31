@@ -142,8 +142,8 @@ class UniquePipe():
                 self.algorithm_function = generate_truncated_file_hash
             else:
                 self.algorithm_function = generate_truncated_string_hash
-        if debug:
-            ic(self.algorithm_function)
+        if self.verbose:
+            ic(self.algorithm_function, self.accept_empty, paths, self.distance, self.algorithm)
 
     def filter(self, string):
         assert isinstance(string, str)
