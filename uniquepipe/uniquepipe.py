@@ -21,18 +21,17 @@
 import sys
 
 import click
+#from colorama import init as coloramainit
+#from termcolor import colored
+#coloramainit(autoreset=True)
+from asserttool import ic
+from asserttool import nevd
 from colorama import Fore
 from colorama import Style
 from enumerate_input import enumerate_input
 
 from uniquepipe import UniquePipe
 from uniquepipe.UniquePipe import HashAlgorithmError
-
-#from colorama import init as coloramainit
-#from termcolor import colored
-#coloramainit(autoreset=True)
-
-
 
 
 def str_list(line):
@@ -54,12 +53,6 @@ def eprint(*args, **kwargs):
     print(Style.BRIGHT + color, file=sys.stderr, end='')
     print(*args, file=sys.stderr, **kwargs, end='')
     print(Style.RESET_ALL, file=sys.stderr)
-
-
-try:
-    from icecream import ic  # https://github.com/gruns/icecream
-except ImportError:
-    ic = eprint
 
 
 def perhaps_invert(thing, *, invert):
@@ -119,7 +112,6 @@ def print_result(*,
 @click.option('--verbose', is_flag=True)
 @click.option('--debug', is_flag=True)
 @click.option('--count', is_flag=True)
-@click.option("--printn", is_flag=True)
 @click.option("--prepend", is_flag=True)
 @click.option("--accept-empty", is_flag=True)
 @click.option("--length", type=int, default=32)
@@ -136,7 +128,9 @@ def print_result(*,
                               allow_dash=True,),
               multiple=True)
 @click.option("--preload-delim-null", "--preload-null", is_flag=True)
-def cli(items,
+@click.pass_context
+def cli(ctx,
+        items,
         duplicates: bool,
         preloads,
         preload_delim_null: bool,
@@ -152,16 +146,16 @@ def cli(items,
         debug: bool,
         paths: bool,
         images: bool,
-        printn: bool,
         prepend: bool,
         ):
 
-    null = not printn
-    end = '\n'
-    if null:
-        end = '\x00'
-    if sys.stdout.isatty():
-        end = '\n'
+    null, end, verbose, debug = nevd(ctx=ctx,
+                                     printn=False,
+                                     ipython=False,
+                                     verbose=verbose,
+                                     debug=debug,)
+    end = end.decode('utf8')
+    # bug... not angryfiles safe
 
     preload_null = False
     if preload_delim_null:
@@ -281,8 +275,6 @@ def cli(items,
                              debug=debug,
                              stderr=True,
                              )
-
-
 
     if count:
         if duplicates:
