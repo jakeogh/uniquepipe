@@ -146,7 +146,7 @@ class UniquePipe():
             ic(self.algorithm_function, self.accept_empty, paths, self.distance, self.algorithm)
 
     def filter(self, string):
-        assert isinstance(string, str)
+        assert (isinstance(string, str) or isinstance(string, bytes))
         string_hash = self.algorithm_function(string=string,
                                               length=self.length,
                                               algorithm=self.algorithm,
