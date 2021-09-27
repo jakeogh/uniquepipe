@@ -24,6 +24,7 @@ import click
 #from colorama import init as coloramainit
 #from termcolor import colored
 #coloramainit(autoreset=True)
+from asserttool import eprint
 from asserttool import ic
 from asserttool import nevd
 from colorama import Fore
@@ -42,17 +43,17 @@ def str_list(line):
     return line
 
 
-def eprint(*args, **kwargs):
-    #color = Fore.GREEN
-    color = Fore.MAGENTA
-    #color = Fore.YELLOW
-    if 'file' in kwargs.keys():
-        kwargs.pop('file')
-    if 'end' in kwargs.keys():
-        kwargs.pop('end')
-    print(Style.BRIGHT + color, file=sys.stderr, end='')
-    print(*args, file=sys.stderr, **kwargs, end='')
-    print(Style.RESET_ALL, file=sys.stderr)
+#def eprint(*args, **kwargs):
+#    #color = Fore.GREEN
+#    color = Fore.MAGENTA
+#    #color = Fore.YELLOW
+#    if 'file' in kwargs.keys():
+#        kwargs.pop('file')
+#    if 'end' in kwargs.keys():
+#        kwargs.pop('end')
+#    print(Style.BRIGHT + color, file=sys.stderr, end='')
+#    print(*args, file=sys.stderr, **kwargs, end='')
+#    print(Style.RESET_ALL, file=sys.stderr)
 
 
 def perhaps_invert(thing, *, invert):
@@ -127,13 +128,11 @@ def print_result(*,
                               path_type=str,
                               allow_dash=True,),
               multiple=True)
-@click.option("--preload-delim-null", "--preload-null", is_flag=True)
 @click.pass_context
 def cli(ctx,
         items,
         duplicates: bool,
         preloads,
-        preload_delim_null: bool,
         verbose: bool,
         count: int,
         exit_on_collision: bool,
@@ -157,10 +156,6 @@ def cli(ctx,
     end = end.decode('utf8')
     # bug... not angryfiles safe
 
-    preload_null = False
-    if preload_delim_null:
-        preload_null = True
-
     if images:
         algorithm = 'pdqhash'
 
@@ -180,13 +175,9 @@ def cli(ctx,
                             debug=debug,)
     for preload in preloads:
         if verbose:
-            ic(preload, preload_delim_null, preload_null)
+            ic(preload)
         with open(preload, 'rb') as fh:
             for index, item in enumerate_input(iterator=fh,
-                                               head=False,
-                                               skip=False,
-                                               tail=False,
-                                               null=preload_null,
                                                disable_stdin=True,
                                                debug=debug,
                                                verbose=verbose,
@@ -206,10 +197,6 @@ def cli(ctx,
     duplicate_count = 0
     #bytes_read = 0
     for index, item in enumerate_input(iterator=items,
-                                       head=False,
-                                       skip=False,
-                                       tail=False,
-                                       null=null,
                                        debug=debug,
                                        verbose=verbose,):
         new = False
