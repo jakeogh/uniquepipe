@@ -43,28 +43,12 @@ def str_list(line):
     return line
 
 
-#def eprint(*args, **kwargs):
-#    #color = Fore.GREEN
-#    color = Fore.MAGENTA
-#    #color = Fore.YELLOW
-#    if 'file' in kwargs.keys():
-#        kwargs.pop('file')
-#    if 'end' in kwargs.keys():
-#        kwargs.pop('end')
-#    print(Style.BRIGHT + color, file=sys.stderr, end='')
-#    print(*args, file=sys.stderr, **kwargs, end='')
-#    print(Style.RESET_ALL, file=sys.stderr)
-
-
 def perhaps_invert(thing, *, invert):
     if invert:
         return not thing
 
 
 def print_list(*, output_list, end, stderr,):
-    #output_file = sys.stdout
-    #if stderr:
-    #    output_file = sys.stderr
     output_list = str_list(output_list)
     if stderr:
         eprint(output_list, end=end)
