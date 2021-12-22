@@ -91,10 +91,10 @@ def generate_truncated_file_hash(*,
                             algorithms=[algorithm],
                             verbose=verbose,
                             debug=debug,)
-    hexdigest = hexdigests[algorithm]
+    digest = hexdigests[algorithm]
 
-    digest = binascii.unhexlify(hexdigest)
-    return digest[0:length]
+    #digest = binascii.unhexlify(digest.digest)
+    return digest.digest[0:length]
 
 
 def generate_pdqhash(*,
@@ -127,6 +127,7 @@ class UniquePipe():
                  length: int = 32,
                  algorithm: str = 'sha3_256',
                  ):
+
         self.hashes = set()
         self.length = length
         self.algorithm = algorithm
