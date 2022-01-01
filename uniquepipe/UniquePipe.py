@@ -17,17 +17,16 @@
 # pylint: disable=W0201  # attribute defined outside __init__
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
-import binascii
+#import binascii
 import hashlib
-import sys
+#import sys
+from math import inf
 from pathlib import Path
-from typing import ByteString
-from typing import Generator
-from typing import Iterable
-from typing import List
+#from typing import ByteString
+#from typing import Generator
+#from typing import Iterable
+#from typing import List
 from typing import Optional
-from typing import Sequence
-from typing import Union
 
 from asserttool import eprint
 from asserttool import ic
@@ -36,6 +35,10 @@ from asserttool import increment_debug
 from bitstring import BitArray
 from hashtool import rhash_file
 from pyphash import hash_pdqhash
+
+#from typing import Sequence
+#from typing import Union
+
 
 
 class HashAlgorithmError(ValueError):
@@ -58,7 +61,6 @@ def generate_truncated_string_hash(*,
                                    length: int,
                                    algorithm: str,
                                    verbose: bool,
-                                   debug: bool,
                                    accept_empty: bool = False,
                                    ) -> bytes:
     string = str(string)  # todo
@@ -82,7 +84,6 @@ def generate_truncated_file_hash(*,
                                  length: int,
                                  algorithm: str,
                                  verbose: bool,
-                                 debug: bool,
                                  accept_empty: bool = False,
                                  ):
 
@@ -90,7 +91,7 @@ def generate_truncated_file_hash(*,
     hexdigests = rhash_file(path=path,
                             algorithms=[algorithm],
                             verbose=verbose,
-                            debug=debug,)
+                            )
     digest = hexdigests[algorithm]
 
     #digest = binascii.unhexlify(digest.digest)
@@ -102,14 +103,13 @@ def generate_pdqhash(*,
                      length: int,
                      algorithm: str,
                      verbose: bool,
-                     debug: bool,
                      accept_empty: bool = False,
                      ):
 
     digest = hash_pdqhash(path=Path(string),
                           rotations=False,  # todo
                           verbose=verbose,
-                          debug=debug,)
+                          )
 
     if digest:
         return digest
@@ -120,7 +120,6 @@ class UniquePipe():
     @increment_debug
     def __init__(self, *,
                  verbose: bool,
-                 debug: bool,
                  accept_empty: bool,
                  paths: bool,
                  distance: Optional[int] = None,
@@ -132,7 +131,6 @@ class UniquePipe():
         self.length = length
         self.algorithm = algorithm
         self.verbose = verbose
-        self.debug = debug
         self.accept_empty = accept_empty
         self.distance = distance
         if algorithm == 'pdqhash':
@@ -153,9 +151,9 @@ class UniquePipe():
                                               algorithm=self.algorithm,
                                               accept_empty=self.accept_empty,
                                               verbose=self.verbose,
-                                              debug=self.debug,)
+                                              )
         distance = None
-        if self.debug:
+        if self.verbose == inf:
             ic(string_hash)
         if self.distance is None:
             if string_hash not in self.hashes:
@@ -186,7 +184,7 @@ class UniquePipe():
                                               algorithm=self.algorithm,
                                               accept_empty=self.accept_empty,
                                               verbose=self.verbose,
-                                              debug=self.debug,)
+                                              )
         if self.verbose:
             ic(string_hash)
         self.hashes.remove(string_hash)
@@ -197,7 +195,7 @@ class UniquePipe():
                                               algorithm=self.algorithm,
                                               accept_empty=self.accept_empty,
                                               verbose=self.verbose,
-                                              debug=self.debug,)
+                                              )
         if self.verbose:
             ic(string_hash)
         self.hashes.add(string_hash)
@@ -208,7 +206,7 @@ class UniquePipe():
                                               algorithm=self.algorithm,
                                               accept_empty=self.accept_empty,
                                               verbose=self.verbose,
-                                              debug=self.debug,)
+                                              )
         if self.verbose:
             ic(string_hash)
         if string_hash in self.hashes:

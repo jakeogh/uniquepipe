@@ -27,6 +27,9 @@ import click
 from asserttool import eprint
 from asserttool import ic
 from asserttool import nevd
+from asserttool import tv
+from clicktool import click_add_options
+from clicktool import click_global_options
 from colorama import Fore
 from colorama import Style
 from enumerate_input import enumerate_input
@@ -66,7 +69,6 @@ def print_result(*,
                  stderr,
                  skipped,
                  verbose: bool,
-                 debug: bool,
                  ):
 
     output_list = []
@@ -94,8 +96,6 @@ def print_result(*,
 @click.option('--duplicates', is_flag=True)
 @click.option('--paths', is_flag=True, help='hash file contents')
 @click.option('--images', '--image', is_flag=True)
-@click.option('--verbose', is_flag=True)
-@click.option('--debug', is_flag=True)
 @click.option('--count', is_flag=True)
 @click.option('--prepend', is_flag=True)
 @click.option('--accept-empty', is_flag=True)
@@ -112,12 +112,14 @@ def print_result(*,
                               path_type=str,
                               allow_dash=True,),
               multiple=True)
+@click_add_options(click_global_options)
 @click.pass_context
 def cli(ctx,
         items,
         duplicates: bool,
         preloads,
-        verbose: bool,
+        verbose: int,
+        verbose_inf: bool,
         count: int,
         exit_on_collision: bool,
         length: int,
@@ -126,18 +128,16 @@ def cli(ctx,
         distance: int,
         accept_empty: bool,
         algorithm: str,
-        debug: bool,
         paths: bool,
         images: bool,
         prepend: bool,
         ):
 
-    null, end, verbose, debug = nevd(ctx=ctx,
-                                     printn=False,
-                                     ipython=False,
-                                     verbose=verbose,
-                                     debug=debug,)
-    end = end.decode('utf8')
+    tty, verbose = tv(ctx=ctx,
+                      verbose=verbose,
+                      verbose_inf=verbose_inf,
+                      )
+    #end = end.decode('utf8')
     # bug... not angryfiles safe
 
     if images:
@@ -156,14 +156,13 @@ def cli(ctx,
                             distance=distance,
                             paths=paths,
                             verbose=verbose,
-                            debug=debug,)
+                            )
     for preload in preloads:
         if verbose:
             ic(preload)
         with open(preload, 'rb') as fh:
             for index, item in enumerate_input(iterator=fh,
                                                disable_stdin=True,
-                                               debug=debug,
                                                verbose=verbose,
                                                ):
                 if verbose:
@@ -181,7 +180,6 @@ def cli(ctx,
     duplicate_count = 0
     #bytes_read = 0
     for index, item in enumerate_input(iterator=items,
-                                       debug=debug,
                                        verbose=verbose,):
         new = False
         distance = None
@@ -208,11 +206,10 @@ def cli(ctx,
                                  item=item,
                                  prepend=prepend,
                                  show_closest_distance=show_closest_distance,
-                                 end=end,
+                                 end=b'\n',
                                  skipped=False,
                                  stderr=False,
                                  verbose=verbose,
-                                 debug=debug,
                                  )
         else:
             duplicate_count += 1
@@ -228,10 +225,9 @@ def cli(ctx,
                              item=item,
                              prepend=prepend,
                              show_closest_distance=show_closest_distance,
-                             end=end,
+                             end=b'\n',
                              skipped=False,
                              verbose=verbose,
-                             debug=debug,
                              stderr=False,
                              )
             if show_skipped:
@@ -240,10 +236,9 @@ def cli(ctx,
                              item=item,
                              prepend=prepend,
                              show_closest_distance=show_closest_distance,
-                             end=end,
+                             end=b'\n',
                              skipped=True,
                              verbose=verbose,
-                             debug=debug,
                              stderr=True,
                              )
 
