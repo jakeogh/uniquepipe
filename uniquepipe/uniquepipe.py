@@ -26,6 +26,7 @@ from asserttool import ic
 from asserttool import tv
 from clicktool import click_add_options
 from clicktool import click_global_options
+from printtool import output
 #from colorama import Fore
 #from colorama import Style
 from unmp import unmp
@@ -198,16 +199,17 @@ def cli(ctx,
             unique_count += 1
             if not count:
                 if not duplicates:
-                    print_result(digest=digest,
-                                 distance=distance,
-                                 item=item,
-                                 prepend=prepend,
-                                 show_closest_distance=show_closest_distance,
-                                 end=b'\n',
-                                 skipped=False,
-                                 stderr=False,
-                                 verbose=verbose,
-                                 )
+                    output(item, tty=tty, verbose=verbose,)
+                    #print_result(digest=digest,
+                    #             distance=distance,
+                    #             item=item,
+                    #             prepend=prepend,
+                    #             show_closest_distance=show_closest_distance,
+                    #             end=b'\n',
+                    #             skipped=False,
+                    #             stderr=False,
+                    #             verbose=verbose,
+                    #             )
         else:
             duplicate_count += 1
             if exit_on_collision:
@@ -217,27 +219,29 @@ def cli(ctx,
                 ic(sys.getsizeof(uniquepipe))
                 raise ValueError("collision: {}".format(item))
             if duplicates:
-                print_result(digest=digest,
-                             distance=distance,
-                             item=item,
-                             prepend=prepend,
-                             show_closest_distance=show_closest_distance,
-                             end=b'\n',
-                             skipped=False,
-                             verbose=verbose,
-                             stderr=False,
-                             )
+                output(item, tty=tty, verbose=verbose,)
+                #print_result(digest=digest,
+                #             distance=distance,
+                #             item=item,
+                #             prepend=prepend,
+                #             show_closest_distance=show_closest_distance,
+                #             end=b'\n',
+                #             skipped=False,
+                #             verbose=verbose,
+                #             stderr=False,
+                #             )
             if show_skipped:
-                print_result(digest=digest,
-                             distance=distance,
-                             item=item,
-                             prepend=prepend,
-                             show_closest_distance=show_closest_distance,
-                             end=b'\n',
-                             skipped=True,
-                             verbose=verbose,
-                             stderr=True,
-                             )
+                output(item, tty=tty, verbose=verbose,)
+                #print_result(digest=digest,
+                #             distance=distance,
+                #             item=item,
+                #             prepend=prepend,
+                #             show_closest_distance=show_closest_distance,
+                #             end=b'\n',
+                #             skipped=True,
+                #             verbose=verbose,
+                #             stderr=True,
+                #             )
 
     if count:
         if duplicates:
