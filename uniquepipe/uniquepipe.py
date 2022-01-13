@@ -173,7 +173,7 @@ def cli(ctx,
     if items:
         iterator = items
     else:
-        iterator = unmp(verbose=verbose, valid_types=[bytes,])
+        iterator = unmp(verbose=verbose, valid_types=[str, bytes,])
 
     for index, item in enumerate(iterator):
         new = False
