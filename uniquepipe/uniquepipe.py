@@ -21,18 +21,14 @@
 import sys
 
 import click
-#from colorama import init as coloramainit
-#from termcolor import colored
-#coloramainit(autoreset=True)
 from asserttool import eprint
 from asserttool import ic
-from asserttool import nevd
 from asserttool import tv
 from clicktool import click_add_options
 from clicktool import click_global_options
-from colorama import Fore
-from colorama import Style
-from enumerate_input import enumerate_input
+#from colorama import Fore
+#from colorama import Style
+from unmp import unmp
 
 from uniquepipe import UniquePipe
 from uniquepipe.UniquePipe import HashAlgorithmError
@@ -68,7 +64,7 @@ def print_result(*,
                  end,
                  stderr,
                  skipped,
-                 verbose: bool,
+                 verbose: int,
                  ):
 
     output_list = []
@@ -161,10 +157,7 @@ def cli(ctx,
         if verbose:
             ic(preload)
         with open(preload, 'rb') as fh:
-            for index, item in enumerate_input(iterator=fh,
-                                               disable_stdin=True,
-                                               verbose=verbose,
-                                               ):
+            for index, item in enumerate(fh):
                 if verbose:
                     ic('preload:', index, item)
                 try:
@@ -179,8 +172,12 @@ def cli(ctx,
     unique_count = 0
     duplicate_count = 0
     #bytes_read = 0
-    for index, item in enumerate_input(iterator=items,
-                                       verbose=verbose,):
+    if items:
+        iterator = items
+    else:
+        iterator = unmp(verbose=verbose, valid_types=[bytes,])
+
+    for index, item in enumerate(iterator):
         new = False
         distance = None
         digest = None
@@ -244,6 +241,6 @@ def cli(ctx,
 
     if count:
         if duplicates:
-            print(duplicate_count, end=end)
+            print(duplicate_count, file=sys.stderr)
         else:
-            print(unique_count, end=end)
+            print(unique_count, file=sys.stderr)

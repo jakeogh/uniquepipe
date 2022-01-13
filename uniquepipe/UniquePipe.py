@@ -46,7 +46,7 @@ class HashAlgorithmError(ValueError):
 
 
 def hamming_distance(a, b, *,
-                     verbose: bool = False,
+                     verbose: int,
                      ):
     distance = (BitArray(a) ^ BitArray(b)).count(True)
     if verbose:
@@ -60,7 +60,7 @@ def generate_truncated_string_hash(*,
                                    string: str,
                                    length: int,
                                    algorithm: str,
-                                   verbose: bool,
+                                   verbose: int,
                                    accept_empty: bool = False,
                                    ) -> bytes:
     string = str(string)  # todo
@@ -83,7 +83,7 @@ def generate_truncated_file_hash(*,
                                  string: str,
                                  length: int,
                                  algorithm: str,
-                                 verbose: bool,
+                                 verbose: int,
                                  accept_empty: bool = False,
                                  ):
 
@@ -102,7 +102,7 @@ def generate_pdqhash(*,
                      string: str,
                      length: int,
                      algorithm: str,
-                     verbose: bool,
+                     verbose: int,
                      accept_empty: bool = False,
                      ):
 
@@ -119,7 +119,7 @@ def generate_pdqhash(*,
 class UniquePipe():
     @increment_debug
     def __init__(self, *,
-                 verbose: bool,
+                 verbose: int,
                  accept_empty: bool,
                  paths: bool,
                  distance: Optional[int] = None,
