@@ -22,10 +22,6 @@ import hashlib
 #import sys
 from math import inf
 from pathlib import Path
-#from typing import ByteString
-#from typing import Generator
-#from typing import Iterable
-#from typing import List
 from typing import Optional
 
 from asserttool import eprint
@@ -162,7 +158,7 @@ class UniquePipe():
             return False, None, string_hash   # needed to be able to --prepend to duplicates
         assert self.distance > 0
         for existing_hash in self.hashes:
-            distance = hamming_distance(existing_hash, string_hash)
+            distance = hamming_distance(existing_hash, string_hash, verbose=self.verbose)
             if self.verbose:
                 eprint(string_hash.hex())
                 eprint(existing_hash.hex(), distance)
