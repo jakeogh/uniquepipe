@@ -48,44 +48,44 @@ def perhaps_invert(thing, *, invert):
         return not thing
 
 
-def print_list(*, output_list, end, stderr,):
-    output_list = str_list(output_list)
-    if stderr:
-        eprint(output_list, end=end)
-    else:
-        print(output_list, end=end)
-
-
-def print_result(*,
-                 digest,
-                 distance,
-                 item,
-                 prepend,
-                 show_closest_distance,
-                 end,
-                 stderr,
-                 skipped,
-                 verbose: int,
-                 ):
-
-    output_list = []
-    if skipped:
-        assert stderr
-        if verbose:
-            output_list.append('skipped:')
-
-    if prepend:
-        output_list.append(digest.hex())
-        if show_closest_distance:
-            output_list.append(distance)
-        output_list.append(item)
-
-    else:
-        if show_closest_distance:
-            output_list.append(distance)
-        output_list.append(item)
-
-    print_list(output_list=output_list, end=end, stderr=stderr)
+#def print_list(*, output_list, end, stderr,):
+#    output_list = str_list(output_list)
+#    if stderr:
+#        eprint(output_list, end=end)
+#    else:
+#        print(output_list, end=end)
+#
+#
+#def print_result(*,
+#                 digest,
+#                 distance,
+#                 item,
+#                 prepend,
+#                 show_closest_distance,
+#                 end,
+#                 stderr,
+#                 skipped,
+#                 verbose: int,
+#                 ):
+#
+#    output_list = []
+#    if skipped:
+#        assert stderr
+#        if verbose:
+#            output_list.append('skipped:')
+#
+#    if prepend:
+#        output_list.append(digest.hex())
+#        if show_closest_distance:
+#            output_list.append(distance)
+#        output_list.append(item)
+#
+#    else:
+#        if show_closest_distance:
+#            output_list.append(distance)
+#        output_list.append(item)
+#
+#    print_list(output_list=output_list, end=end, stderr=stderr)
 
 
 @click.command()
@@ -134,9 +134,6 @@ def cli(ctx,
                       verbose=verbose,
                       verbose_inf=verbose_inf,
                       )
-    #end = end.decode('utf8')
-    # bug... not angryfiles safe
-
     if images:
         algorithm = 'pdqhash'
 
