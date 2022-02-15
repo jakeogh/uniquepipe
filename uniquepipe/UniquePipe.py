@@ -23,12 +23,13 @@ import hashlib
 from math import inf
 from pathlib import Path
 from typing import Optional
+from typing import Union
 
-from asserttool import eprint
 from asserttool import ic
 from asserttool import increment_debug
 #import numpy
 from bitstring import BitArray
+from eprint import eprint
 from hashtool import rhash_file
 from pyphash import hash_pdqhash
 
@@ -36,13 +37,12 @@ from pyphash import hash_pdqhash
 #from typing import Union
 
 
-
 class HashAlgorithmError(ValueError):
     pass
 
 
 def hamming_distance(a, b, *,
-                     verbose: int,
+                     verbose: Union[bool, int, float],
                      ):
     distance = (BitArray(a) ^ BitArray(b)).count(True)
     if verbose:
@@ -51,12 +51,13 @@ def hamming_distance(a, b, *,
 
     return distance
 
+
 @increment_debug
 def generate_truncated_string_hash(*,
                                    string: str,
                                    length: int,
                                    algorithm: str,
-                                   verbose: int,
+                                   verbose: Union[bool, int, float],
                                    accept_empty: bool = False,
                                    ) -> bytes:
     string = str(string)  # todo
@@ -79,7 +80,7 @@ def generate_truncated_file_hash(*,
                                  string: str,
                                  length: int,
                                  algorithm: str,
-                                 verbose: int,
+                                 verbose: Union[bool, int, float],
                                  accept_empty: bool = False,
                                  ):
 
@@ -98,7 +99,7 @@ def generate_pdqhash(*,
                      string: str,
                      length: int,
                      algorithm: str,
-                     verbose: int,
+                     verbose: Union[bool, int, float],
                      accept_empty: bool = False,
                      ):
 
@@ -115,7 +116,7 @@ def generate_pdqhash(*,
 class UniquePipe():
     @increment_debug
     def __init__(self, *,
-                 verbose: int,
+                 verbose: Union[bool, int, float],
                  accept_empty: bool,
                  paths: bool,
                  distance: Optional[int] = None,
