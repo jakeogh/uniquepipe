@@ -19,14 +19,15 @@
 
 
 import sys
+from typing import Union
 
 import click
-from asserttool import eprint
 from asserttool import ic
-from asserttool import tv
 from clicktool import click_add_options
 from clicktool import click_global_options
-from printtool import output
+from clicktool import tv
+from eprint import eprint
+from mptool import output
 #from colorama import Fore
 #from colorama import Style
 from unmp import unmp
@@ -56,37 +57,6 @@ def perhaps_invert(thing, *, invert):
 #        print(output_list, end=end)
 #
 #
-#def print_result(*,
-#                 digest,
-#                 distance,
-#                 item,
-#                 prepend,
-#                 show_closest_distance,
-#                 end,
-#                 stderr,
-#                 skipped,
-#                 verbose: int,
-#                 ):
-#
-#    output_list = []
-#    if skipped:
-#        assert stderr
-#        if verbose:
-#            output_list.append('skipped:')
-#
-#    if prepend:
-#        output_list.append(digest.hex())
-#        if show_closest_distance:
-#            output_list.append(distance)
-#        output_list.append(item)
-#
-#    else:
-#        if show_closest_distance:
-#            output_list.append(distance)
-#        output_list.append(item)
-#
-#    print_list(output_list=output_list, end=end, stderr=stderr)
-
 
 @click.command()
 @click.argument("items", type=str, nargs=-1)
@@ -115,7 +85,7 @@ def cli(ctx,
         items,
         duplicates: bool,
         preloads,
-        verbose: int,
+        verbose: Union[bool, int, float],
         verbose_inf: bool,
         count: int,
         exit_on_collision: bool,
