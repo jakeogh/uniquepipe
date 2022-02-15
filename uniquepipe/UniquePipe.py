@@ -160,11 +160,11 @@ class UniquePipe():
         assert self.distance > 0
         for existing_hash in self.hashes:
             distance = hamming_distance(existing_hash, string_hash, verbose=self.verbose)
-            if self.verbose:
+            if self.verbose == inf:
                 eprint(string_hash.hex())
                 eprint(existing_hash.hex(), distance)
             if distance <= self.distance:
-                if self.verbose:
+                if self.verbose == inf:
                     ic(distance)
                 # it's close to something in the set, so add it to the set, and return False
                 self.hashes.add(string_hash)
@@ -182,7 +182,7 @@ class UniquePipe():
                                               accept_empty=self.accept_empty,
                                               verbose=self.verbose,
                                               )
-        if self.verbose:
+        if self.verbose == inf:
             ic(string_hash)
         self.hashes.remove(string_hash)
 
@@ -193,7 +193,7 @@ class UniquePipe():
                                               accept_empty=self.accept_empty,
                                               verbose=self.verbose,
                                               )
-        if self.verbose:
+        if self.verbose == inf:
             ic(string_hash)
         self.hashes.add(string_hash)
 
