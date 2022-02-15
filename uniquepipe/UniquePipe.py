@@ -204,7 +204,7 @@ class UniquePipe():
                                               accept_empty=self.accept_empty,
                                               verbose=self.verbose,
                                               )
-        if self.verbose:
+        if self.verbose == inf:
             ic(string_hash)
         if string_hash in self.hashes:
             return True
