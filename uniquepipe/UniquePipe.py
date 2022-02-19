@@ -20,6 +20,7 @@
 #import binascii
 import hashlib
 #import sys
+import os
 from math import inf
 from pathlib import Path
 from typing import Optional
@@ -53,8 +54,8 @@ def hamming_distance(a, b, *,
 
 
 @increment_debug
-def generate_truncated_string_hash(*,
-                                   string: str,
+def generate_truncated_string_hash(string: Union[str, bytes],
+                                   *,
                                    length: int,
                                    algorithm: str,
                                    verbose: Union[bool, int, float],
@@ -76,41 +77,41 @@ def generate_truncated_string_hash(*,
     return digest[0:length]
 
 
-def generate_truncated_file_hash(*,
-                                 string: str,
+def generate_truncated_file_hash(path: Path,
+                                 *,
                                  length: int,
                                  algorithm: str,
                                  verbose: Union[bool, int, float],
                                  accept_empty: bool = False,
                                  ):
 
-    path = Path(string).resolve()
-    hexdigests = rhash_file(path=path,
-                            algorithms=[algorithm],
-                            verbose=verbose,
-                            )
-    digest = hexdigests[algorithm]
-
+    _path = Path(os.fsdecode(path)).resolve()
+    digests = rhash_file(path=_path,
+                         algorithms=[algorithm],
+                         verbose=verbose,
+                         )
+    digest = digests[algorithm]
     #digest = binascii.unhexlify(digest.digest)
     return digest.digest[0:length]
 
 
-def generate_pdqhash(*,
-                     string: str,
+def generate_pdqhash(path: Path,
+                     *,
                      length: int,
                      algorithm: str,
                      verbose: Union[bool, int, float],
                      accept_empty: bool = False,
                      ):
 
-    digest = hash_pdqhash(path=Path(string),
+    _path = Path(os.fsdecode(path)).resolve()
+    digest = hash_pdqhash(path=_path,
                           rotations=False,  # todo
                           verbose=verbose,
                           )
 
     if digest:
         return digest
-    raise HashAlgorithmError(string)
+    raise HashAlgorithmError(_path)
 
 
 class UniquePipe():
@@ -141,9 +142,9 @@ class UniquePipe():
         if self.verbose:
             ic(self.algorithm_function, self.accept_empty, paths, self.distance, self.algorithm)
 
-    def filter(self, string):
+    def filter(self, string: Union[str, bytes]):
         assert (isinstance(string, str) or isinstance(string, bytes))
-        string_hash = self.algorithm_function(string=string,
+        string_hash = self.algorithm_function(string,
                                               length=self.length,
                                               algorithm=self.algorithm,
                                               accept_empty=self.accept_empty,
@@ -176,7 +177,7 @@ class UniquePipe():
         return True, distance, string_hash
 
     def remove(self, string):  # .pop() returns arb element
-        string_hash = self.algorithm_function(string=string,
+        string_hash = self.algorithm_function(string,
                                               length=self.length,
                                               algorithm=self.algorithm,
                                               accept_empty=self.accept_empty,
@@ -187,7 +188,7 @@ class UniquePipe():
         self.hashes.remove(string_hash)
 
     def add(self, string):
-        string_hash = self.algorithm_function(string=string,
+        string_hash = self.algorithm_function(string,
                                               length=self.length,
                                               algorithm=self.algorithm,
                                               accept_empty=self.accept_empty,
@@ -198,7 +199,7 @@ class UniquePipe():
         self.hashes.add(string_hash)
 
     def exists(self, string):
-        string_hash = self.algorithm_function(string=string,
+        string_hash = self.algorithm_function(string,
                                               length=self.length,
                                               algorithm=self.algorithm,
                                               accept_empty=self.accept_empty,
