@@ -153,15 +153,24 @@ def cli(
     if items:
         iterator = items
     else:
+        # could/should operate over the raw seralized messagepacked objects instead
         iterator = unmp(
             verbose=verbose,
             valid_types=[
                 str,
                 bytes,
+                dict,
             ],
+            single_type=True,
         )
 
     for index, item in enumerate(iterator):
+        if isinstance(item, dict):
+            assert len(list(item.items())) == 1
+            for _k, _v in item.items():
+                assert isinstance(_k, (str, bytes))
+                assert isinstance(_v, (str, bytes))
+            item = str(item)
         new = False
         distance = None
         digest = None
