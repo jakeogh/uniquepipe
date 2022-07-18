@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 
-# pylint: disable=C0111  # docstrings are always outdated and wrong
-# pylint: disable=W0511  # todo is encouraged
-# pylint: disable=C0301  # line too long
-# pylint: disable=R0902  # too many instance attributes
-# pylint: disable=C0302  # too many lines in module
-# pylint: disable=C0103  # single letter var names, func name too descriptive
-# pylint: disable=R0911  # too many return statements
-# pylint: disable=R0912  # too many branches
-# pylint: disable=R0915  # too many statements
-# pylint: disable=R0913  # too many arguments
-# pylint: disable=R1702  # too many nested blocks
-# pylint: disable=R0914  # too many local variables
-# pylint: disable=R0903  # too few public methods
-# pylint: disable=E1101  # no member for base
-# pylint: disable=W0201  # attribute defined outside __init__
-# pylint: disable=R0916  # Too many boolean expressions in if statement
+# pylint: disable=missing-docstring               # [C0111] docstrings are always outdated and wrong
+# pylint: disable=fixme                           # [W0511] todo is encouraged
+# pylint: disable=line-too-long                   # [C0301]
+# pylint: disable=too-many-instance-attributes    # [R0902]
+# pylint: disable=too-many-lines                  # [C0302] too many lines in module
+# pylint: disable=invalid-name                    # [C0103] single letter var names, name too descriptive
+# pylint: disable=too-many-return-statements      # [R0911]
+# pylint: disable=too-many-branches               # [R0912]
+# pylint: disable=too-many-statements             # [R0915]
+# pylint: disable=too-many-arguments              # [R0913]
+# pylint: disable=too-many-nested-blocks          # [R1702]
+# pylint: disable=too-many-locals                 # [R0914]
+# pylint: disable=too-few-public-methods          # [R0903]
+# pylint: disable=no-member                       # [E1101] no member for base
+# pylint: disable=attribute-defined-outside-init  # [W0201]
+# pylint: disable=too-many-boolean-expressions    # [R0916] in if statement
 
+from __future__ import annotations
 
 import sys
-from typing import Union
 
 import click
 from asserttool import ic
@@ -27,8 +27,6 @@ from clicktool import click_add_options
 from clicktool import click_global_options
 from clicktool import tv
 from eprint import eprint
-# from colorama import Fore
-# from colorama import Style
 from mptool import output
 from mptool import unmp
 
@@ -47,16 +45,6 @@ def str_list(line):
 def perhaps_invert(thing, *, invert):
     if invert:
         return not thing
-
-
-# def print_list(*, output_list, end, stderr,):
-#    output_list = str_list(output_list)
-#    if stderr:
-#        eprint(output_list, end=end)
-#    else:
-#        print(output_list, end=end)
-#
-#
 
 
 @click.command()
@@ -92,7 +80,7 @@ def cli(
     items,
     duplicates: bool,
     preloads,
-    verbose: Union[bool, int, float],
+    verbose: bool | int | float,
     verbose_inf: bool,
     count: int,
     exit_on_collision: bool,
@@ -198,16 +186,6 @@ def cli(
                         tty=tty,
                         verbose=verbose,
                     )
-                    # print_result(digest=digest,
-                    #             distance=distance,
-                    #             item=item,
-                    #             prepend=prepend,
-                    #             show_closest_distance=show_closest_distance,
-                    #             end=b'\n',
-                    #             skipped=False,
-                    #             stderr=False,
-                    #             verbose=verbose,
-                    #             )
         else:
             duplicate_count += 1
             if exit_on_collision:
@@ -215,7 +193,7 @@ def cli(
                 ic(unique_count)
                 ic(uniquepipe.__sizeof__())
                 ic(sys.getsizeof(uniquepipe))
-                raise ValueError("collision: {}".format(item))
+                raise ValueError(f"collision: {item}")
             if duplicates:
                 output(
                     item,
@@ -224,16 +202,6 @@ def cli(
                     tty=tty,
                     verbose=verbose,
                 )
-                # print_result(digest=digest,
-                #             distance=distance,
-                #             item=item,
-                #             prepend=prepend,
-                #             show_closest_distance=show_closest_distance,
-                #             end=b'\n',
-                #             skipped=False,
-                #             verbose=verbose,
-                #             stderr=False,
-                #             )
             if show_skipped:
                 output(
                     item,
@@ -242,17 +210,6 @@ def cli(
                     tty=tty,
                     verbose=verbose,
                 )
-                # print_result(digest=digest,
-                #             distance=distance,
-                #             item=item,
-                #             prepend=prepend,
-                #             show_closest_distance=show_closest_distance,
-                #             end=b'\n',
-                #             skipped=True,
-                #             verbose=verbose,
-                #             stderr=True,
-                #             )
-
     if count:
         if duplicates:
             output(
