@@ -16,7 +16,6 @@
 # pylint: disable=no-member                       # [E1101] no member for base
 # pylint: disable=attribute-defined-outside-init  # [W0201]
 # pylint: disable=too-many-boolean-expressions    # [R0916] in if statement
-
 from __future__ import annotations
 
 import sys
@@ -28,7 +27,7 @@ from clicktool import click_global_options
 from clicktool import tv
 from eprint import eprint
 from mptool import output
-from mptool import unmp
+from unmp import unmp
 
 from uniquepipe import UniquePipe
 from uniquepipe.UniquePipe import HashAlgorithmError
