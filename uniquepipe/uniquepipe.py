@@ -92,7 +92,7 @@ def cli(
     paths: bool,
     images: bool,
     prepend: bool,
-    dict_input: bool,
+    dict_output: bool,
 ):
 
     tty, verbose = tv(
@@ -181,7 +181,7 @@ def cli(
                     output(
                         item,
                         reason=None,
-                        dict_input=dict_input,
+                        dict_output=dict_output,
                         tty=tty,
                         verbose=verbose,
                     )
@@ -197,7 +197,7 @@ def cli(
                 output(
                     item,
                     reason=None,
-                    dict_input=dict_input,
+                    dict_output=dict_output,
                     tty=tty,
                     verbose=verbose,
                 )
@@ -205,7 +205,7 @@ def cli(
                 output(
                     item,
                     reason=None,
-                    dict_input=dict_input,
+                    dict_output=dict_output,
                     tty=tty,
                     verbose=verbose,
                 )
@@ -214,7 +214,7 @@ def cli(
             output(
                 duplicate_count,
                 reason=None,
-                dict_input=dict_input,
+                dict_output=dict_output,
                 tty=tty,
                 verbose=verbose,
             )
@@ -222,7 +222,7 @@ def cli(
             output(
                 unique_count,
                 reason=None,
-                dict_input=dict_input,
+                dict_output=dict_output,
                 tty=tty,
                 verbose=verbose,
             )
