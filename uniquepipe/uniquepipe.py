@@ -21,6 +21,7 @@
 from __future__ import annotations
 
 import sys
+from collections.abc import Sequence
 
 import click
 from asserttool import ic
@@ -49,7 +50,6 @@ def perhaps_invert(thing, *, invert):
 
 
 @click.command()
-@click.argument("items", type=str, nargs=-1)
 @click.option("--duplicates", is_flag=True)
 @click.option("--paths", is_flag=True, help="hash file contents")
 @click.option("--images", "--image", is_flag=True)
@@ -78,7 +78,6 @@ def perhaps_invert(thing, *, invert):
 @click.pass_context
 def cli(
     ctx,
-    items,
     duplicates: bool,
     preloads,
     verbose: bool | int | float,
@@ -147,19 +146,17 @@ def cli(
     unique_count = 0
     duplicate_count = 0
     # bytes_read = 0
-    if items:
-        iterator = items
-    else:
-        # could/should operate over the raw seralized messagepacked objects instead
-        iterator = unmp(
-            verbose=verbose,
-            valid_types=[
-                str,
-                bytes,
-                dict,
-            ],
-            single_type=True,
-        )
+
+    # could/should operate over the raw seralized messagepacked objects instead
+    iterator: Sequence[dict | bytes | str] = unmp(
+        verbose=verbose,
+        valid_types=[
+            str,
+            bytes,
+            dict,
+        ],
+        single_type=True,
+    )
 
     for index, item in enumerate(iterator):
         if isinstance(item, dict):
@@ -219,20 +216,21 @@ def cli(
                     tty=tty,
                     verbose=verbose,
                 )
-    if count:
-        if duplicates:
-            output(
-                duplicate_count,
-                reason=None,
-                dict_output=dict_output,
-                tty=tty,
-                verbose=verbose,
-            )
-        else:
-            output(
-                unique_count,
-                reason=None,
-                dict_output=dict_output,
-                tty=tty,
-                verbose=verbose,
-            )
+    # if count:
+    #    assert False
+    #    if duplicates:
+    #        output(
+    #            duplicate_count,
+    #            reason=None,
+    #            dict_output=dict_output,
+    #            tty=tty,
+    #            verbose=verbose,
+    #        )
+    #    else:
+    #        output(
+    #            unique_count,
+    #            reason=None,
+    #            dict_output=dict_output,
+    #            tty=tty,
+    #            verbose=verbose,
+    #        )
