@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+# -*- coding: utf8 -*-
 
+# pylint: disable=useless-suppression             # [I0021]
 # pylint: disable=missing-docstring               # [C0111] docstrings are always outdated and wrong
 # pylint: disable=fixme                           # [W0511] todo is encouraged
 # pylint: disable=line-too-long                   # [C0301]
@@ -157,7 +159,7 @@ class UniquePipe:
             )
 
     def filter(self, string: str | bytes):
-        assert isinstance(string, str) or isinstance(string, bytes)
+        # assert isinstance(string, str) or isinstance(string, bytes)
         string_hash = self.algorithm_function(
             string,
             length=self.length,
