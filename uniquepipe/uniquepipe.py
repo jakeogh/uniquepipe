@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+# -*- coding: utf8 -*-
 
+# pylint: disable=useless-suppression             # [I0021]
 # pylint: disable=missing-docstring               # [C0111] docstrings are always outdated and wrong
 # pylint: disable=fixme                           # [W0511] todo is encouraged
 # pylint: disable=line-too-long                   # [C0301]
@@ -121,8 +123,16 @@ def cli(
     for preload in preloads:
         if verbose:
             ic(preload)
+
         with open(preload, "rb") as fh:
-            for index, item in enumerate(fh):
+            iterator = unmp(
+                file_handle=fh,
+                valid_types=[
+                    bytes,
+                ],
+                verbose=verbose,
+            )
+            for index, item in enumerate(iterator):
                 if verbose:
                     ic("preload:", index, item)
                 try:
