@@ -30,7 +30,6 @@ from pathlib import Path
 
 from asserttool import ic
 from asserttool import increment_debug
-# import numpy
 from bitstring import BitArray
 from eprint import eprint
 from hashtool import rhash_file
