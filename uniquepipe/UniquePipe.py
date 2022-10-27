@@ -21,15 +21,12 @@
 
 from __future__ import annotations
 
-# import binascii
 import hashlib
-# import sys
 import os
 from math import inf
 from pathlib import Path
 
 from asserttool import ic
-from asserttool import increment_debug
 from bitstring import BitArray
 from eprint import eprint
 from hashtool import rhash_file
@@ -54,7 +51,6 @@ def hamming_distance(
     return distance
 
 
-@increment_debug
 def generate_truncated_string_hash(
     string: str | bytes,
     *,
@@ -122,7 +118,6 @@ def generate_pdqhash(
 
 
 class UniquePipe:
-    @increment_debug
     def __init__(
         self,
         *,
