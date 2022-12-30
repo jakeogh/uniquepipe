@@ -30,11 +30,8 @@ from asserttool import ic
 from bitstring import BitArray
 from eprint import eprint
 from hashtool import rhash_file
-from pyphash import hash_pdqhash
-
-
-class HashAlgorithmError(ValueError):
-    pass
+from phashtool.phashtool import HashAlgorithmError
+from phashtool.phashtool import hash_pdqhash
 
 
 def hamming_distance(
